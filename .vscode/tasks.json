@@ -32,9 +32,11 @@
             "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
             "args": [
                 "-fdiagnostics-color=always",
+                "-I${fileDirname}\\include",
+                "-L${fileDirname}",
                 "-g",
                 "${file}",
-                "-I${fileDirname}\\include",
+                "${fileDirname}\\src\\glad.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

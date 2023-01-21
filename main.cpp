@@ -4,10 +4,10 @@
 #include <fstream>
 #include <sstream>
 
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #define GLFW_DLL
-#include <homemade\shader_s.h>
+#include <homemade/shader_s.h>
 
 using namespace std;
 
