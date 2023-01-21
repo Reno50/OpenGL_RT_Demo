@@ -3,9 +3,10 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
+#include <glad\glad.h>
+#include <GLFW\glfw3.h>
+#define GLFW_DLL
 #include <homemade\shader_s.h>
 
 using namespace std;
@@ -88,7 +89,7 @@ int main() {
         glBindVertexArray(vertarrayobj);
 
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
