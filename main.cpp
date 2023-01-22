@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -27,7 +28,7 @@ int main() {
 
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL", NULL, NULL);
     if (window == NULL) {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        //std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -37,7 +38,7 @@ int main() {
 
     //Load glad before any OpenGL stuff because glad manages pointers for OpenGL
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        //std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
@@ -45,15 +46,15 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, //first
-        0.5f, -0.5f, 0.0f,  //second
-        0.5f,  0.5f, 0.0f,  //third
-        -0.5f, 0.5f, 0.0f    //fourth
+        -0.5f, -0.5f, 0.0f, //Bottom Left
+        0.5f, -0.5f, 0.0f,  //Bottom Right
+        0.5f,  0.5f, 0.0f,  //Top Right
+        -0.5f, 0.5f, 0.0f    //Top Left
     };  
 
     unsigned int indices[] = {
-        0, 1, 3, //first
-        1, 2, 3  //second
+        0, 1, 3, //First Triangle
+        1, 2, 3  //Second Triangle
         };
 
     unsigned int vertbufferobj, vertarrayobj, elembufferobj;
@@ -88,10 +89,9 @@ int main() {
 
         //Render the buffer and stuff
         mainShaders.use();
-        glBindVertexArray(vertarrayobj);
 
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
