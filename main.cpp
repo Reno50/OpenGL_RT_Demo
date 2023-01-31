@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -46,10 +47,10 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, //Bottom Left
-        0.5f, -0.5f, 0.0f,  //Bottom Right
-        0.5f,  0.5f, 0.0f,  //Top Right
-        -0.5f, 0.5f, 0.0f    //Top Left
+        -1.0f, -1.0f, 0.0f, //Bottom Left
+        1.0f, -1.0f, 0.0f,  //Bottom Right
+        1.0f,  1.0f, 0.0f,  //Top Right
+        -1.0f, 1.0f, 0.0f    //Top Left
     };  
 
     unsigned int indices[] = {
@@ -87,9 +88,17 @@ int main() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //Render the buffer and stuff
+        //Use the shader
         mainShaders.use();
 
+        float timeValue = glfwGetTime();
+        int resolution[2]; 
+        glfwGetWindowSize(window, &resolution[0], &resolution[1]);
+
+        mainShaders.setFloat("iTime", timeValue);
+        mainShaders.setInt2("iResolution", resolution[0], resolution[1]);
+
+        //Render the buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
