@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 
+#include <IMG/stb_image.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
