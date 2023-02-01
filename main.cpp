@@ -3,7 +3,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -46,11 +45,11 @@ int main() {
     //Construct the viewport
     glViewport(0, 0, 800, 600);
 
-    float vertices[] = {
-        -1.0f, -1.0f, 0.0f, //Bottom Left
-        1.0f, -1.0f, 0.0f,  //Bottom Right
-        1.0f,  1.0f, 0.0f,  //Top Right
-        -1.0f, 1.0f, 0.0f    //Top Left
+    float vertices[] = {  //Vertices (3) + Colors (3)
+        -0.9f, -0.8f, 0.0f, 0.1f, 0.9f, 0.0f,//Bottom Left
+        0.7f, -0.5f, 0.0f,  0.9f, 0.1f, 0.0f,//Bottom Right
+        0.8f,  0.9f, 0.0f,  0.0f, 0.1f, 0.9f,//Top Right
+        -0.5f, 0.6f, 0.0f,  0.9f, 0.9f, 0.0f //Top Left
     };  
 
     unsigned int indices[] = {
@@ -76,8 +75,10 @@ int main() {
     //Shader class stuff
     CreShader mainShaders = CreShader("shaders/testvert.glsl", "shaders/testfrag.glsl");
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);  
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     while(!glfwWindowShouldClose(window)) {
 
