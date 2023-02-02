@@ -49,10 +49,10 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     float vertices[] = {  //Vertices (3) + Colors (3) + Tex Coords (2)
-        -0.9f, -0.8f, 0.0f,   0.1f, 0.9f, 0.0f,   0.0f, 0.0f,//Bottom Left
-        0.7f, -0.5f, 0.0f,    0.9f, 0.1f, 0.0f,   1.0f, 0.0f,//Bottom Right
+        -0.8f, -0.9f, 0.0f,   0.1f, 0.9f, 0.0f,   0.0f, 0.0f,//Bottom Left
+        0.5f, -0.6f, 0.0f,    0.9f, 0.1f, 0.0f,   1.0f, 0.0f,//Bottom Right
         0.8f,  0.9f, 0.0f,    0.0f, 0.1f, 0.9f,   1.0f, 1.0f,//Top Right
-        -0.5f, 0.6f, 0.0f,    0.9f, 0.9f, 0.0f,   0.0f, 1.0f//Top Left
+        -0.5f, 0.6f, 0.0f,    0.9f, 0.9f, 0.0f,   0.0f, 1.0f //Top Left
     };  
 
     unsigned int indices[] = {
@@ -60,22 +60,30 @@ int main() {
         1, 2, 3  //Second Triangle
         };
 
-    int width;
-    int height;
-    int channelCount;
-    unsigned char *data = stbi_load("content/textures/test2.png", &width, &height, &channelCount, 0);
+    //Texture loading stuff
+    stbi_set_flip_vertically_on_load(true);  
+
+    int forestWidth;
+    int forestHeight;
+    int forestChannelCount;
+    unsigned char *forestData = stbi_load("content/textures/test.png", &forestWidth, &forestHeight, &forestChannelCount, 0);
+
+    int catWidth;
+    int catHeight;
+    int catChannelCount;
+    unsigned char *catData = stbi_load("content/textures/test2.png", &catWidth, &catHeight, &catChannelCount, 0);
 
     unsigned int texture;
     glGenTextures(1, &texture);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);   
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, forestWidth, forestHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, forestData);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
@@ -103,6 +111,7 @@ int main() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     mainShaders.use();
     glUniform1i(glGetUniformLocation(mainShaders.ID, "miscTexture"), 0);
