@@ -68,25 +68,49 @@ int main() {
     int forestChannelCount;
     unsigned char *forestData = stbi_load("content/textures/test.png", &forestWidth, &forestHeight, &forestChannelCount, 0);
 
-    int catWidth;
-    int catHeight;
-    int catChannelCount;
-    unsigned char *catData = stbi_load("content/textures/test2.png", &catWidth, &catHeight, &catChannelCount, 0);
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
+    unsigned int forestTexture;
+    glGenTextures(1, &forestTexture);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, forestTexture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);	
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);   
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, forestWidth, forestHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, forestData);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    if(forestData)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, forestWidth, forestHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, forestData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
 
-    stbi_image_free(data);
+    stbi_image_free(forestData);
+
+    //I should probably loop this process at some point
+
+    int catWidth;
+    int catHeight;
+    int catChannelCount;
+    unsigned char *catData = stbi_load("content/textures/test2.png", &catWidth, &catHeight, &catChannelCount, 0);
+
+    unsigned int catTexture;
+    glGenTextures(1, &catTexture);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, catTexture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (catData) 
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, catData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    stbi_image_free(catData);
+
 
     unsigned int vertbufferobj, vertarrayobj, elembufferobj;
 
@@ -113,8 +137,12 @@ int main() {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    //Complicated way --> glUniform1i(glGetUniformLocation(mainShaders.ID, "forestTexture"), 0);
+    //Simple way --> mainShaders.setInt("forestTexture", 0);
+    
     mainShaders.use();
-    glUniform1i(glGetUniformLocation(mainShaders.ID, "miscTexture"), 0);
+    mainShaders.setInt("forestTexture", 0);
+    mainShaders.setInt("catTexture", 1);
 
     while(!glfwWindowShouldClose(window)) {
 
@@ -125,18 +153,16 @@ int main() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        float timeValue = glfwGetTime();
-        int resolution[2]; 
-        glfwGetWindowSize(window, &resolution[0], &resolution[1]);
+        //Bind textures and activate shaders
 
-        mainShaders.setFloat("iTime", timeValue);
-        mainShaders.setInt2("iResolution", resolution[0], resolution[1]);
-
-        glUniform1i(glGetUniformLocation(mainShaders.ID, "miscTexture"), 0);
-
-        //Bind and render the buffer, and bind the textures
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, forestTexture);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, catTexture);
+
+        mainShaders.use();
+
+        //Bind and render the vertex/element buffer
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
         glBindVertexArray(vertarrayobj);
