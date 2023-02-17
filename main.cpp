@@ -12,6 +12,10 @@
 
 #include <homemade\shader_s.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
 
 const unsigned int SCR_WIDTH = 1920;
@@ -28,6 +32,9 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    double x = 0.1;
+    x = glm::acos(x);
 
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL", NULL, NULL);
     if (window == NULL) {
@@ -105,7 +112,7 @@ int main() {
 
     if (catData) 
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, catData);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, catData); //Some PNGs use RGBA, very important for functional textures
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
