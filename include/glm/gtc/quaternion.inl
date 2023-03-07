@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /// @ref gtc_quaternion
 /// @file glm/gtc/quaternion.inl
 
@@ -588,51 +587,6 @@ namespace detail
 	GLM_FUNC_QUALIFIER tmat3x3<T, P> mat3_cast(tquat<T, P> const & q)
 	{
 		tmat3x3<T, P> Result(T(1));
-=======
-#include "../trigonometric.hpp"
-#include "../geometric.hpp"
-#include "../exponential.hpp"
-#include "epsilon.hpp"
-#include <limits>
-
-namespace glm
-{
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> eulerAngles(qua<T, Q> const& x)
-	{
-		return vec<3, T, Q>(pitch(x), yaw(x), roll(x));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER T roll(qua<T, Q> const& q)
-	{
-		return static_cast<T>(atan(static_cast<T>(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER T pitch(qua<T, Q> const& q)
-	{
-		//return T(atan(T(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z));
-		T const y = static_cast<T>(2) * (q.y * q.z + q.w * q.x);
-		T const x = q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z;
-
-		if(all(equal(vec<2, T, Q>(x, y), vec<2, T, Q>(0), epsilon<T>()))) //avoid atan2(0,0) - handle singularity - Matiis
-			return static_cast<T>(static_cast<T>(2) * atan(q.x, q.w));
-
-		return static_cast<T>(atan(y, x));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER T yaw(qua<T, Q> const& q)
-	{
-		return asin(clamp(static_cast<T>(-2) * (q.x * q.z - q.w * q.y), static_cast<T>(-1), static_cast<T>(1)));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<3, 3, T, Q> mat3_cast(qua<T, Q> const& q)
-	{
-		mat<3, 3, T, Q> Result(T(1));
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T qxx(q.x * q.x);
 		T qyy(q.y * q.y);
 		T qzz(q.z * q.z);
@@ -657,7 +611,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tmat4x4<T, P> mat4_cast(tquat<T, P> const & q)
 	{
@@ -666,16 +619,6 @@ namespace glm
 
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tquat<T, P> quat_cast(tmat3x3<T, P> const & m)
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> mat4_cast(qua<T, Q> const& q)
-	{
-		return mat<4, 4, T, Q>(mat3_cast(q));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER qua<T, Q> quat_cast(mat<3, 3, T, Q> const& m)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		T fourXSquaredMinus1 = m[0][0] - m[1][1] - m[2][2];
 		T fourYSquaredMinus1 = m[1][1] - m[0][0] - m[2][2];
@@ -700,7 +643,6 @@ namespace glm
 			biggestIndex = 3;
 		}
 
-<<<<<<< HEAD
 		T biggestVal = sqrt(fourBiggestSquaredMinus1 + T(1)) * T(0.5);
 		T mult = static_cast<T>(0.25) / biggestVal;
 
@@ -780,91 +722,38 @@ namespace glm
 	GLM_FUNC_QUALIFIER tvec4<bool, P> lessThan(tquat<T, P> const & x, tquat<T, P> const & y)
 	{
 		tvec4<bool, P> Result(uninitialize);
-=======
-		T biggestVal = sqrt(fourBiggestSquaredMinus1 + static_cast<T>(1)) * static_cast<T>(0.5);
-		T mult = static_cast<T>(0.25) / biggestVal;
-
-		switch(biggestIndex)
-		{
-		case 0:
-			return qua<T, Q>(biggestVal, (m[1][2] - m[2][1]) * mult, (m[2][0] - m[0][2]) * mult, (m[0][1] - m[1][0]) * mult);
-		case 1:
-			return qua<T, Q>((m[1][2] - m[2][1]) * mult, biggestVal, (m[0][1] + m[1][0]) * mult, (m[2][0] + m[0][2]) * mult);
-		case 2:
-			return qua<T, Q>((m[2][0] - m[0][2]) * mult, (m[0][1] + m[1][0]) * mult, biggestVal, (m[1][2] + m[2][1]) * mult);
-		case 3:
-			return qua<T, Q>((m[0][1] - m[1][0]) * mult, (m[2][0] + m[0][2]) * mult, (m[1][2] + m[2][1]) * mult, biggestVal);
-		default: // Silence a -Wswitch-default warning in GCC. Should never actually get here. Assert is just for sanity.
-			assert(false);
-			return qua<T, Q>(1, 0, 0, 0);
-		}
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER qua<T, Q> quat_cast(mat<4, 4, T, Q> const& m4)
-	{
-		return quat_cast(mat<3, 3, T, Q>(m4));
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, bool, Q> lessThan(qua<T, Q> const& x, qua<T, Q> const& y)
-	{
-		vec<4, bool, Q> Result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		for(length_t i = 0; i < x.length(); ++i)
 			Result[i] = x[i] < y[i];
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<bool, P> lessThanEqual(tquat<T, P> const & x, tquat<T, P> const & y)
 	{
 		tvec4<bool, P> Result(uninitialize);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, bool, Q> lessThanEqual(qua<T, Q> const& x, qua<T, Q> const& y)
-	{
-		vec<4, bool, Q> Result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		for(length_t i = 0; i < x.length(); ++i)
 			Result[i] = x[i] <= y[i];
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<bool, P> greaterThan(tquat<T, P> const & x, tquat<T, P> const & y)
 	{
 		tvec4<bool, P> Result(uninitialize);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, bool, Q> greaterThan(qua<T, Q> const& x, qua<T, Q> const& y)
-	{
-		vec<4, bool, Q> Result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		for(length_t i = 0; i < x.length(); ++i)
 			Result[i] = x[i] > y[i];
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<bool, P> greaterThanEqual(tquat<T, P> const & x, tquat<T, P> const & y)
 	{
 		tvec4<bool, P> Result(uninitialize);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, bool, Q> greaterThanEqual(qua<T, Q> const& x, qua<T, Q> const& y)
-	{
-		vec<4, bool, Q> Result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		for(length_t i = 0; i < x.length(); ++i)
 			Result[i] = x[i] >= y[i];
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<bool, P> equal(tquat<T, P> const & x, tquat<T, P> const & y)
 	{
@@ -901,47 +790,6 @@ namespace glm
 }//namespace glm
 
 #if GLM_ARCH != GLM_ARCH_PURE && GLM_HAS_ALIGNED_TYPE
-=======
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER qua<T, Q> quatLookAt(vec<3, T, Q> const& direction, vec<3, T, Q> const& up)
-	{
-#		if GLM_CONFIG_CLIP_CONTROL & GLM_CLIP_CONTROL_LH_BIT
-			return quatLookAtLH(direction, up);
-#		else
-			return quatLookAtRH(direction, up);
-# 		endif
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER qua<T, Q> quatLookAtRH(vec<3, T, Q> const& direction, vec<3, T, Q> const& up)
-	{
-		mat<3, 3, T, Q> Result;
-
-		Result[2] = -direction;
-		vec<3, T, Q> const& Right = cross(up, Result[2]);
-		Result[0] = Right * inversesqrt(max(static_cast<T>(0.00001), dot(Right, Right)));
-		Result[1] = cross(Result[2], Result[0]);
-
-		return quat_cast(Result);
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER qua<T, Q> quatLookAtLH(vec<3, T, Q> const& direction, vec<3, T, Q> const& up)
-	{
-		mat<3, 3, T, Q> Result;
-
-		Result[2] = direction;
-		vec<3, T, Q> const& Right = cross(up, Result[2]);
-		Result[0] = Right * inversesqrt(max(static_cast<T>(0.00001), dot(Right, Right)));
-		Result[1] = cross(Result[2], Result[0]);
-
-		return quat_cast(Result);
-	}
-}//namespace glm
-
-#if GLM_CONFIG_SIMD == GLM_ENABLE
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #	include "quaternion_simd.inl"
 #endif
 

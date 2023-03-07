@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 /// @ref core
 /// @file glm/detail/_features.hpp
 
-=======
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #pragma once
 
 // #define GLM_CXX98_EXCEPTIONS
@@ -29,11 +26,7 @@
 // Variadic templates - GCC 4.3
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2242.pdf
 
-<<<<<<< HEAD
 // 
-=======
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Extending variadic template template parameters - GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2555.pdf
 
@@ -41,11 +34,7 @@
 // Initializer lists - GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2672.htm
 
-<<<<<<< HEAD
 // #define GLM_CXX11_STATIC_ASSERT 
-=======
-// #define GLM_CXX11_STATIC_ASSERT
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Static assertions - GCC 4.3
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1720.html
 
@@ -73,7 +62,6 @@
 // Declared type of an expression - GCC 4.3
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2343.pdf
 
-<<<<<<< HEAD
 // 
 // Right angle brackets - GCC 4.3
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1757.html
@@ -83,17 +71,6 @@
 // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#226
 
 // 
-=======
-//
-// Right angle brackets - GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1757.html
-
-//
-// Default template arguments for function templates	DR226	GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#226
-
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Solving the SFINAE problem for expressions	DR339	GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2634.html
 
@@ -101,11 +78,7 @@
 // Template aliases	N2258	GCC 4.7
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2258.pdf
 
-<<<<<<< HEAD
 // 
-=======
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Extern templates	N1987	Yes
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n1987.htm
 
@@ -117,7 +90,6 @@
 // Strongly-typed enums	N2347	GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2347.pdf
 
-<<<<<<< HEAD
 // 
 // Forward declarations for enums	N2764	GCC 4.6
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2764.pdf
@@ -131,21 +103,6 @@
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2235.pdf
 
 // 
-=======
-//
-// Forward declarations for enums	N2764	GCC 4.6
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2764.pdf
-
-//
-// Generalized attributes	N2761	GCC 4.8
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2761.pdf
-
-//
-// Generalized constant expressions	N2235	GCC 4.6
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2235.pdf
-
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Alignment support	N2341	GCC 4.8
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2341.pdf
 
@@ -153,11 +110,7 @@
 // Delegating constructors	N1986	GCC 4.7
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n1986.pdf
 
-<<<<<<< HEAD
 // 
-=======
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Inheriting constructors	N2540	GCC 4.8
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2540.htm
 
@@ -165,7 +118,6 @@
 // Explicit conversion operators	N2437	GCC 4.5
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2437.pdf
 
-<<<<<<< HEAD
 // 
 // New character types	N2249	GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2249.html
@@ -179,21 +131,6 @@
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2442.htm
 
 // 
-=======
-//
-// New character types	N2249	GCC 4.4
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2249.html
-
-//
-// Unicode string literals	N2442	GCC 4.5
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2442.htm
-
-//
-// Raw string literals	N2442	GCC 4.5
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2442.htm
-
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Universal character name literals	N2170	GCC 4.5
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2170.html
 
@@ -201,11 +138,7 @@
 // User-defined literals		N2765	GCC 4.7
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2765.pdf
 
-<<<<<<< HEAD
 // 
-=======
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Standard Layout Types	N2342	GCC 4.5
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2342.htm
 
@@ -214,19 +147,11 @@
 // Defaulted and deleted functions	N2346	GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2346.htm
 
-<<<<<<< HEAD
 // 
 // Extended friend declarations	N1791	GCC 4.7
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1791.pdf
 
 // 
-=======
-//
-// Extended friend declarations	N1791	GCC 4.7
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1791.pdf
-
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Extending sizeof	N2253	GCC 4.4
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2253.html
 
@@ -252,11 +177,7 @@
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3206.htm
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3272.htm
 
-<<<<<<< HEAD
 // 
-=======
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Minimal support for garbage collection and reachability-based leak detection	N2670	No
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2670.htm
 
@@ -264,7 +185,6 @@
 // Allowing move constructors to throw [noexcept]	N3050	GCC 4.6 (core language only)
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3050.html
 
-<<<<<<< HEAD
 // 
 // Defining move special member functions	N3053	GCC 4.6
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3053.html
@@ -326,81 +246,14 @@
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1811.pdf
 
 // 
-=======
-//
-// Defining move special member functions	N3053	GCC 4.6
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3053.html
-
-//
-// Sequence points	N2239	Yes
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2239.html
-
-//
-// Atomic operations	N2427	GCC 4.4
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2239.html
-
-//
-// Strong Compare and Exchange	N2748	GCC 4.5
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2427.html
-
-//
-// Bidirectional Fences	N2752	GCC 4.8
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2752.htm
-
-//
-// Memory model	N2429	GCC 4.8
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2429.htm
-
-//
-// Data-dependency ordering: atomics and memory model	N2664	GCC 4.4
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2664.htm
-
-//
-// Propagating exceptions	N2179	GCC 4.4
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2179.html
-
-//
-// Abandoning a process and at_quick_exit	N2440	GCC 4.8
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2440.htm
-
-//
-// Allow atomics use in signal handlers	N2547	Yes
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2547.htm
-
-//
-// Thread-local storage	N2659	GCC 4.8
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2659.htm
-
-//
-// Dynamic initialization and destruction with concurrency	N2660	GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2660.htm
-
-//
-// __func__ predefined identifier	N2340	GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2340.htm
-
-//
-// C99 preprocessor	N1653	GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1653.htm
-
-//
-// long long	N1811	GCC 4.3
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1811.pdf
-
-//
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 // Extended integral types	N1988	Yes
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n1988.pdf
 
 #if(GLM_COMPILER & GLM_COMPILER_GCC)
 
-<<<<<<< HEAD
 #	if(GLM_COMPILER >= GLM_COMPILER_GCC43)
 #		define GLM_CXX11_STATIC_ASSERT
 #	endif
-=======
-#	define GLM_CXX11_STATIC_ASSERT
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 #elif(GLM_COMPILER & GLM_COMPILER_CLANG)
 #	if(__has_feature(cxx_exceptions))

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /// @ref gtc_matrix_transform
 /// @file glm/gtc/matrix_transform.inl
 
@@ -574,8 +573,3 @@ namespace glm
 		return Result;
 	}
 }//namespace glm
-=======
-#include "../geometric.hpp"
-#include "../trigonometric.hpp"
-#include "../matrix.hpp"
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8

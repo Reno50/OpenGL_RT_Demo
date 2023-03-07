@@ -1,5 +1,4 @@
 /// @ref gtx_rotate_vector
-<<<<<<< HEAD
 /// @file glm/gtx/rotate_vector.inl
 
 namespace glm
@@ -10,17 +9,6 @@ namespace glm
 		tvec3<T, P> const & x,
 		tvec3<T, P> const & y,
 		T const & a
-=======
-
-namespace glm
-{
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> slerp
-	(
-		vec<3, T, Q> const& x,
-		vec<3, T, Q> const& y,
-		T const& a
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	)
 	{
 		// get cosine of angle between vectors (-1 -> 1)
@@ -37,7 +25,6 @@ namespace glm
 		return x * t1 + y * t2;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec2<T, P> rotate
 	(
@@ -46,16 +33,6 @@ namespace glm
 	)
 	{
 		tvec2<T, P> Result;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<2, T, Q> rotate
-	(
-		vec<2, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<2, T, Q> Result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -64,7 +41,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> rotate
 	(
@@ -81,51 +57,23 @@ namespace glm
 		const tvec3<T, P>& x,
 		T angle,
 		const tvec3<T, P>& normal)
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotate
-	(
-		vec<3, T, Q> const& v,
-		T const& angle,
-		vec<3, T, Q> const& normal
-	)
-	{
-		return mat<3, 3, T, Q>(glm::rotate(angle, normal)) * v;
-	}
-	/*
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotateGTX(
-		const vec<3, T, Q>& x,
-		T angle,
-		const vec<3, T, Q>& normal)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		const T Cos = cos(radians(angle));
 		const T Sin = sin(radians(angle));
 		return x * Cos + ((x * normal) * (T(1) - Cos)) * normal + cross(x, normal) * Sin;
 	}
 	*/
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<T, P> rotate
 	(
 		tvec4<T, P> const & v,
 		T const & angle,
 		tvec3<T, P> const & normal
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, T, Q> rotate
-	(
-		vec<4, T, Q> const& v,
-		T const& angle,
-		vec<3, T, Q> const& normal
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	)
 	{
 		return rotate(angle, normal) * v;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> rotateX
 	(
@@ -134,16 +82,6 @@ namespace glm
 	)
 	{
 		tvec3<T, P> Result(v);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotateX
-	(
-		vec<3, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<3, T, Q> Result(v);
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -152,7 +90,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> rotateY
 	(
@@ -161,16 +98,6 @@ namespace glm
 	)
 	{
 		tvec3<T, P> Result = v;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotateY
-	(
-		vec<3, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<3, T, Q> Result = v;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -179,7 +106,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> rotateZ
 	(
@@ -188,16 +114,6 @@ namespace glm
 	)
 	{
 		tvec3<T, P> Result = v;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotateZ
-	(
-		vec<3, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<3, T, Q> Result = v;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -206,7 +122,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<T, P> rotateX
 	(
@@ -215,16 +130,6 @@ namespace glm
 	)
 	{
 		tvec4<T, P> Result = v;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, T, Q> rotateX
-	(
-		vec<4, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<4, T, Q> Result = v;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -233,7 +138,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<T, P> rotateY
 	(
@@ -242,16 +146,6 @@ namespace glm
 	)
 	{
 		tvec4<T, P> Result = v;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, T, Q> rotateY
-	(
-		vec<4, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<4, T, Q> Result = v;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -260,7 +154,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<T, P> rotateZ
 	(
@@ -269,16 +162,6 @@ namespace glm
 	)
 	{
 		tvec4<T, P> Result = v;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, T, Q> rotateZ
-	(
-		vec<4, T, Q> const& v,
-		T const& angle
-	)
-	{
-		vec<4, T, Q> Result = v;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T const Cos(cos(angle));
 		T const Sin(sin(angle));
 
@@ -287,7 +170,6 @@ namespace glm
 		return Result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tmat4x4<T, P> orientation
 	(
@@ -299,19 +181,6 @@ namespace glm
 			return tmat4x4<T, P>(T(1));
 
 		tvec3<T, P> RotationAxis = cross(Up, Normal);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> orientation
-	(
-		vec<3, T, Q> const& Normal,
-		vec<3, T, Q> const& Up
-	)
-	{
-		if(all(equal(Normal, Up, epsilon<T>())))
-			return mat<4, 4, T, Q>(static_cast<T>(1));
-
-		vec<3, T, Q> RotationAxis = cross(Up, Normal);
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		T Angle = acos(dot(Normal, Up));
 
 		return rotate(Angle, RotationAxis);

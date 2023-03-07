@@ -1,5 +1,4 @@
 /// @ref gtx_color_space_YCoCg
-<<<<<<< HEAD
 /// @file glm/gtx/color_space_YCoCg.inl
 
 namespace glm
@@ -11,25 +10,12 @@ namespace glm
 	)
 	{
 		tvec3<T, P> result;
-=======
-
-namespace glm
-{
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCg
-	(
-		vec<3, T, Q> const& rgbColor
-	)
-	{
-		vec<3, T, Q> result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		result.x/*Y */ =   rgbColor.r / T(4) + rgbColor.g / T(2) + rgbColor.b / T(4);
 		result.y/*Co*/ =   rgbColor.r / T(2) + rgbColor.g * T(0) - rgbColor.b / T(2);
 		result.z/*Cg*/ = - rgbColor.r / T(4) + rgbColor.g / T(2) - rgbColor.b / T(4);
 		return result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> YCoCg2rgb
 	(
@@ -37,22 +23,12 @@ namespace glm
 	)
 	{
 		tvec3<T, P> result;
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCg2rgb
-	(
-		vec<3, T, Q> const& YCoCgColor
-	)
-	{
-		vec<3, T, Q> result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		result.r = YCoCgColor.x + YCoCgColor.y - YCoCgColor.z;
 		result.g = YCoCgColor.x				   + YCoCgColor.z;
 		result.b = YCoCgColor.x - YCoCgColor.y - YCoCgColor.z;
 		return result;
 	}
 
-<<<<<<< HEAD
 	template <typename T, precision P, bool isInteger>
 	class compute_YCoCgR {
 	public:
@@ -77,38 +53,11 @@ namespace glm
 			T tmp = YCoCgRColor.x - (YCoCgRColor.z / T(2));
 			result.g = YCoCgRColor.z + tmp;
 			result.b = tmp - (YCoCgRColor.y / T(2));
-=======
-	template<typename T, qualifier Q, bool isInteger>
-	class compute_YCoCgR {
-	public:
-		static GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
-		(
-			vec<3, T, Q> const& rgbColor
-		)
-		{
-			vec<3, T, Q> result;
-			result.x/*Y */ = rgbColor.g * static_cast<T>(0.5) + (rgbColor.r + rgbColor.b) * static_cast<T>(0.25);
-			result.y/*Co*/ = rgbColor.r - rgbColor.b;
-			result.z/*Cg*/ = rgbColor.g - (rgbColor.r + rgbColor.b) * static_cast<T>(0.5);
-			return result;
-		}
-
-		static GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
-		(
-			vec<3, T, Q> const& YCoCgRColor
-		)
-		{
-			vec<3, T, Q> result;
-			T tmp = YCoCgRColor.x - (YCoCgRColor.z * static_cast<T>(0.5));
-			result.g = YCoCgRColor.z + tmp;
-			result.b = tmp - (YCoCgRColor.y * static_cast<T>(0.5));
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			result.r = result.b + YCoCgRColor.y;
 			return result;
 		}
 	};
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	class compute_YCoCgR<T, P, true> {
 	public:
@@ -118,17 +67,6 @@ namespace glm
 		)
 		{
 			tvec3<T, P> result;
-=======
-	template<typename T, qualifier Q>
-	class compute_YCoCgR<T, Q, true> {
-	public:
-		static GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
-		(
-			vec<3, T, Q> const& rgbColor
-		)
-		{
-			vec<3, T, Q> result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			result.y/*Co*/ = rgbColor.r - rgbColor.b;
 			T tmp = rgbColor.b + (result.y >> 1);
 			result.z/*Cg*/ = rgbColor.g - tmp;
@@ -136,21 +74,12 @@ namespace glm
 			return result;
 		}
 
-<<<<<<< HEAD
 		static GLM_FUNC_QUALIFIER tvec3<T, P> YCoCgR2rgb
 		(
 			tvec3<T, P> const & YCoCgRColor
 		)
 		{
 			tvec3<T, P> result;
-=======
-		static GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
-		(
-			vec<3, T, Q> const& YCoCgRColor
-		)
-		{
-			vec<3, T, Q> result;
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			T tmp = YCoCgRColor.x - (YCoCgRColor.z >> 1);
 			result.g = YCoCgRColor.z + tmp;
 			result.b = tmp - (YCoCgRColor.y >> 1);
@@ -159,7 +88,6 @@ namespace glm
 		}
 	};
 
-<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> rgb2YCoCgR
 	(
@@ -176,23 +104,5 @@ namespace glm
 	)
 	{
 		return compute_YCoCgR<T, P, std::numeric_limits<T>::is_integer>::YCoCgR2rgb(YCoCgRColor);
-=======
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
-	(
-		vec<3, T, Q> const& rgbColor
-	)
-	{
-		return compute_YCoCgR<T, Q, std::numeric_limits<T>::is_integer>::rgb2YCoCgR(rgbColor);
-	}
-
-	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
-	(
-		vec<3, T, Q> const& YCoCgRColor
-	)
-	{
-		return compute_YCoCgR<T, Q, std::numeric_limits<T>::is_integer>::YCoCgR2rgb(YCoCgRColor);
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	}
 }//namespace glm

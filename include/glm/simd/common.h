@@ -7,92 +7,52 @@
 
 #if GLM_ARCH & GLM_ARCH_SSE2_BIT
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_add(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_add(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_add_ps(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_add(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec1_add(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_add_ss(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_sub(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_sub(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_sub_ps(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_sub(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec1_sub(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_sub_ss(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_mul(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_mul(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_mul_ps(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_mul(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec1_mul(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_mul_ss(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_div(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_div(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_div_ps(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_div(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec1_div(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_div_ss(a, b);
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_div_lowp(glm_vec4 a, glm_vec4 b)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_div_lowp(glm_f32vec4 a, glm_f32vec4 b)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return glm_vec4_mul(a, _mm_rcp_ps(b));
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_swizzle_xyzw(glm_vec4 a)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_swizzle_xyzw(glm_f32vec4 a)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 #	if GLM_ARCH & GLM_ARCH_AVX2_BIT
 		return _mm_permute_ps(a, _MM_SHUFFLE(3, 2, 1, 0));
@@ -101,41 +61,25 @@ GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_swizzle_xyzw(glm_f32vec4 a)
 #	endif
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_fma(glm_vec4 a, glm_vec4 b, glm_vec4 c)
 {
 #	if GLM_ARCH & GLM_ARCH_AVX2_BIT
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec1_fma(glm_f32vec4 a, glm_f32vec4 b, glm_f32vec4 c)
-{
-#	if (GLM_ARCH & GLM_ARCH_AVX2_BIT) && !(GLM_COMPILER & GLM_COMPILER_CLANG)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		return _mm_fmadd_ss(a, b, c);
 #	else
 		return _mm_add_ss(_mm_mul_ss(a, b), c);
 #	endif
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_fma(glm_vec4 a, glm_vec4 b, glm_vec4 c)
 {
 #	if GLM_ARCH & GLM_ARCH_AVX2_BIT
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_fma(glm_f32vec4 a, glm_f32vec4 b, glm_f32vec4 c)
-{
-#	if (GLM_ARCH & GLM_ARCH_AVX2_BIT) && !(GLM_COMPILER & GLM_COMPILER_CLANG)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		return _mm_fmadd_ps(a, b, c);
 #	else
 		return glm_vec4_add(glm_vec4_mul(a, b), c);
 #	endif
 }
 
-<<<<<<< HEAD
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_abs(glm_vec4 x)
-=======
-GLM_FUNC_QUALIFIER glm_f32vec4 glm_vec4_abs(glm_f32vec4 x)
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 {
 	return _mm_and_ps(x, _mm_castsi128_ps(_mm_set1_epi32(0x7FFFFFFF)));
 }
@@ -159,11 +103,7 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_sign(glm_vec4 x)
 	glm_vec4 const cmp1 = _mm_cmpgt_ps(x, zro0);
 	glm_vec4 const and0 = _mm_and_ps(cmp0, _mm_set1_ps(-1.0f));
 	glm_vec4 const and1 = _mm_and_ps(cmp1, _mm_set1_ps(1.0f));
-<<<<<<< HEAD
 	glm_vec4 const or0 = _mm_or_ps(and0, and1);;
-=======
-	glm_vec4 const or0 = _mm_or_ps(and0, and1);
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	return or0;
 }
 
@@ -172,11 +112,7 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_round(glm_vec4 x)
 #	if GLM_ARCH & GLM_ARCH_SSE41_BIT
 		return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
 #	else
-<<<<<<< HEAD
 		glm_vec4 const sgn0 = _mm_castsi128_ps(_mm_set1_epi32(0x80000000));
-=======
-		glm_vec4 const sgn0 = _mm_castsi128_ps(_mm_set1_epi32(int(0x80000000)));
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		glm_vec4 const and0 = _mm_and_ps(sgn0, x);
 		glm_vec4 const or0 = _mm_or_ps(and0, _mm_set_ps1(8388608.0f));
 		glm_vec4 const add0 = glm_vec4_add(x, or0);
@@ -208,11 +144,7 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_trunc(glm_vec4 x)
 //roundEven
 GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_roundEven(glm_vec4 x)
 {
-<<<<<<< HEAD
 	glm_vec4 const sgn0 = _mm_castsi128_ps(_mm_set1_epi32(0x80000000));
-=======
-	glm_vec4 const sgn0 = _mm_castsi128_ps(_mm_set1_epi32(int(0x80000000)));
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	glm_vec4 const and0 = _mm_and_ps(sgn0, x);
 	glm_vec4 const or0 = _mm_or_ps(and0, _mm_set_ps1(8388608.0f));
 	glm_vec4 const add0 = glm_vec4_add(x, or0);
@@ -288,11 +220,7 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_nan(glm_vec4 x)
 {
 	glm_ivec4 const t1 = _mm_castps_si128(x);						// reinterpret as 32-bit integer
 	glm_ivec4 const t2 = _mm_sll_epi32(t1, _mm_cvtsi32_si128(1));	// shift out sign bit
-<<<<<<< HEAD
 	glm_ivec4 const t3 = _mm_set1_epi32(0xFF000000);				// exponent mask
-=======
-	glm_ivec4 const t3 = _mm_set1_epi32(int(0xFF000000));				// exponent mask
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	glm_ivec4 const t4 = _mm_and_si128(t2, t3);						// exponent
 	glm_ivec4 const t5 = _mm_andnot_si128(t3, t2);					// fraction
 	glm_ivec4 const Equal = _mm_cmpeq_epi32(t3, t4);
@@ -306,11 +234,7 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_inf(glm_vec4 x)
 {
 	glm_ivec4 const t1 = _mm_castps_si128(x);										// reinterpret as 32-bit integer
 	glm_ivec4 const t2 = _mm_sll_epi32(t1, _mm_cvtsi32_si128(1));					// shift out sign bit
-<<<<<<< HEAD
 	return _mm_castsi128_ps(_mm_cmpeq_epi32(t2, _mm_set1_epi32(0xFF000000)));		// exponent is all 1s, fraction is 0
-=======
-	return _mm_castsi128_ps(_mm_cmpeq_epi32(t2, _mm_set1_epi32(int(0xFF000000))));		// exponent is all 1s, fraction is 0
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 }
 
 #endif//GLM_ARCH & GLM_ARCH_SSE2_BIT

@@ -1,7 +1,6 @@
 /// @file glm/ext.hpp
 ///
 /// @ref core (Dependence)
-<<<<<<< HEAD
 /// 
 /// @defgroup gtc GTC Extensions (Stable)
 ///
@@ -25,191 +24,21 @@
 /// Even if it's highly unrecommended, it's possible to include all the extensions 
 /// at once by including <glm/ext.hpp>. Otherwise, each extension needs to be 
 /// included  a specific file.
-=======
-
-#include "detail/setup.hpp"
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 #pragma once
 
 #include "glm.hpp"
 
-<<<<<<< HEAD
 #if GLM_MESSAGES == GLM_MESSAGES_ENABLED && !defined(GLM_MESSAGE_EXT_INCLUDED_DISPLAYED)
 #	define GLM_MESSAGE_EXT_INCLUDED_DISPLAYED
 #	pragma message("GLM: All extensions included (not recommanded)")
 #endif//GLM_MESSAGES
 
-=======
-#if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_MESSAGE_EXT_INCLUDED_DISPLAYED)
-#	define GLM_MESSAGE_EXT_INCLUDED_DISPLAYED
-#	pragma message("GLM: All extensions included (not recommended)")
-#endif//GLM_MESSAGES
-
-#include "./ext/matrix_clip_space.hpp"
-#include "./ext/matrix_common.hpp"
-
-#include "./ext/matrix_double2x2.hpp"
-#include "./ext/matrix_double2x2_precision.hpp"
-#include "./ext/matrix_double2x3.hpp"
-#include "./ext/matrix_double2x3_precision.hpp"
-#include "./ext/matrix_double2x4.hpp"
-#include "./ext/matrix_double2x4_precision.hpp"
-#include "./ext/matrix_double3x2.hpp"
-#include "./ext/matrix_double3x2_precision.hpp"
-#include "./ext/matrix_double3x3.hpp"
-#include "./ext/matrix_double3x3_precision.hpp"
-#include "./ext/matrix_double3x4.hpp"
-#include "./ext/matrix_double3x4_precision.hpp"
-#include "./ext/matrix_double4x2.hpp"
-#include "./ext/matrix_double4x2_precision.hpp"
-#include "./ext/matrix_double4x3.hpp"
-#include "./ext/matrix_double4x3_precision.hpp"
-#include "./ext/matrix_double4x4.hpp"
-#include "./ext/matrix_double4x4_precision.hpp"
-
-#include "./ext/matrix_float2x2.hpp"
-#include "./ext/matrix_float2x2_precision.hpp"
-#include "./ext/matrix_float2x3.hpp"
-#include "./ext/matrix_float2x3_precision.hpp"
-#include "./ext/matrix_float2x4.hpp"
-#include "./ext/matrix_float2x4_precision.hpp"
-#include "./ext/matrix_float3x2.hpp"
-#include "./ext/matrix_float3x2_precision.hpp"
-#include "./ext/matrix_float3x3.hpp"
-#include "./ext/matrix_float3x3_precision.hpp"
-#include "./ext/matrix_float3x4.hpp"
-#include "./ext/matrix_float3x4_precision.hpp"
-#include "./ext/matrix_float4x2.hpp"
-#include "./ext/matrix_float4x2_precision.hpp"
-#include "./ext/matrix_float4x3.hpp"
-#include "./ext/matrix_float4x3_precision.hpp"
-#include "./ext/matrix_float4x4.hpp"
-#include "./ext/matrix_float4x4_precision.hpp"
-
-#include "./ext/matrix_int2x2.hpp"
-#include "./ext/matrix_int2x2_sized.hpp"
-#include "./ext/matrix_int2x3.hpp"
-#include "./ext/matrix_int2x3_sized.hpp"
-#include "./ext/matrix_int2x4.hpp"
-#include "./ext/matrix_int2x4_sized.hpp"
-#include "./ext/matrix_int3x2.hpp"
-#include "./ext/matrix_int3x2_sized.hpp"
-#include "./ext/matrix_int3x3.hpp"
-#include "./ext/matrix_int3x3_sized.hpp"
-#include "./ext/matrix_int3x4.hpp"
-#include "./ext/matrix_int3x4_sized.hpp"
-#include "./ext/matrix_int4x2.hpp"
-#include "./ext/matrix_int4x2_sized.hpp"
-#include "./ext/matrix_int4x3.hpp"
-#include "./ext/matrix_int4x3_sized.hpp"
-#include "./ext/matrix_int4x4.hpp"
-#include "./ext/matrix_int4x4_sized.hpp"
-
-#include "./ext/matrix_uint2x2.hpp"
-#include "./ext/matrix_uint2x2_sized.hpp"
-#include "./ext/matrix_uint2x3.hpp"
-#include "./ext/matrix_uint2x3_sized.hpp"
-#include "./ext/matrix_uint2x4.hpp"
-#include "./ext/matrix_uint2x4_sized.hpp"
-#include "./ext/matrix_uint3x2.hpp"
-#include "./ext/matrix_uint3x2_sized.hpp"
-#include "./ext/matrix_uint3x3.hpp"
-#include "./ext/matrix_uint3x3_sized.hpp"
-#include "./ext/matrix_uint3x4.hpp"
-#include "./ext/matrix_uint3x4_sized.hpp"
-#include "./ext/matrix_uint4x2.hpp"
-#include "./ext/matrix_uint4x2_sized.hpp"
-#include "./ext/matrix_uint4x3.hpp"
-#include "./ext/matrix_uint4x3_sized.hpp"
-#include "./ext/matrix_uint4x4.hpp"
-#include "./ext/matrix_uint4x4_sized.hpp"
-
-#include "./ext/matrix_projection.hpp"
-#include "./ext/matrix_relational.hpp"
-#include "./ext/matrix_transform.hpp"
-
-#include "./ext/quaternion_common.hpp"
-#include "./ext/quaternion_double.hpp"
-#include "./ext/quaternion_double_precision.hpp"
-#include "./ext/quaternion_float.hpp"
-#include "./ext/quaternion_float_precision.hpp"
-#include "./ext/quaternion_exponential.hpp"
-#include "./ext/quaternion_geometric.hpp"
-#include "./ext/quaternion_relational.hpp"
-#include "./ext/quaternion_transform.hpp"
-#include "./ext/quaternion_trigonometric.hpp"
-
-#include "./ext/scalar_common.hpp"
-#include "./ext/scalar_constants.hpp"
-#include "./ext/scalar_integer.hpp"
-#include "./ext/scalar_packing.hpp"
-#include "./ext/scalar_relational.hpp"
-#include "./ext/scalar_ulp.hpp"
-
-#include "./ext/scalar_int_sized.hpp"
-#include "./ext/scalar_uint_sized.hpp"
-
-#include "./ext/vector_common.hpp"
-#include "./ext/vector_integer.hpp"
-#include "./ext/vector_packing.hpp"
-#include "./ext/vector_relational.hpp"
-#include "./ext/vector_ulp.hpp"
-
-#include "./ext/vector_bool1.hpp"
-#include "./ext/vector_bool1_precision.hpp"
-#include "./ext/vector_bool2.hpp"
-#include "./ext/vector_bool2_precision.hpp"
-#include "./ext/vector_bool3.hpp"
-#include "./ext/vector_bool3_precision.hpp"
-#include "./ext/vector_bool4.hpp"
-#include "./ext/vector_bool4_precision.hpp"
-
-#include "./ext/vector_double1.hpp"
-#include "./ext/vector_double1_precision.hpp"
-#include "./ext/vector_double2.hpp"
-#include "./ext/vector_double2_precision.hpp"
-#include "./ext/vector_double3.hpp"
-#include "./ext/vector_double3_precision.hpp"
-#include "./ext/vector_double4.hpp"
-#include "./ext/vector_double4_precision.hpp"
-
-#include "./ext/vector_float1.hpp"
-#include "./ext/vector_float1_precision.hpp"
-#include "./ext/vector_float2.hpp"
-#include "./ext/vector_float2_precision.hpp"
-#include "./ext/vector_float3.hpp"
-#include "./ext/vector_float3_precision.hpp"
-#include "./ext/vector_float4.hpp"
-#include "./ext/vector_float4_precision.hpp"
-
-#include "./ext/vector_int1.hpp"
-#include "./ext/vector_int1_sized.hpp"
-#include "./ext/vector_int2.hpp"
-#include "./ext/vector_int2_sized.hpp"
-#include "./ext/vector_int3.hpp"
-#include "./ext/vector_int3_sized.hpp"
-#include "./ext/vector_int4.hpp"
-#include "./ext/vector_int4_sized.hpp"
-
-#include "./ext/vector_uint1.hpp"
-#include "./ext/vector_uint1_sized.hpp"
-#include "./ext/vector_uint2.hpp"
-#include "./ext/vector_uint2_sized.hpp"
-#include "./ext/vector_uint3.hpp"
-#include "./ext/vector_uint3_sized.hpp"
-#include "./ext/vector_uint4.hpp"
-#include "./ext/vector_uint4_sized.hpp"
-
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtc/bitfield.hpp"
 #include "./gtc/color_space.hpp"
 #include "./gtc/constants.hpp"
 #include "./gtc/epsilon.hpp"
-<<<<<<< HEAD
 #include "./gtc/functions.hpp"
-=======
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtc/integer.hpp"
 #include "./gtc/matrix_access.hpp"
 #include "./gtc/matrix_integer.hpp"
@@ -221,15 +50,11 @@
 #include "./gtc/random.hpp"
 #include "./gtc/reciprocal.hpp"
 #include "./gtc/round.hpp"
-<<<<<<< HEAD
 //#include "./gtc/type_aligned.hpp"
-=======
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtc/type_precision.hpp"
 #include "./gtc/type_ptr.hpp"
 #include "./gtc/ulp.hpp"
 #include "./gtc/vec1.hpp"
-<<<<<<< HEAD
 #if GLM_HAS_ALIGNED_TYPE
 #	include "./gtc/type_aligned.hpp"
 #endif
@@ -237,17 +62,6 @@
 #include "./gtx/associated_min_max.hpp"
 #include "./gtx/bit.hpp"
 #include "./gtx/closest_point.hpp"
-=======
-#if GLM_CONFIG_ALIGNED_GENTYPES == GLM_ENABLE
-#	include "./gtc/type_aligned.hpp"
-#endif
-
-#ifdef GLM_ENABLE_EXPERIMENTAL
-#include "./gtx/associated_min_max.hpp"
-#include "./gtx/bit.hpp"
-#include "./gtx/closest_point.hpp"
-#include "./gtx/color_encoding.hpp"
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtx/color_space.hpp"
 #include "./gtx/color_space_YCoCg.hpp"
 #include "./gtx/compatibility.hpp"
@@ -259,10 +73,6 @@
 #include "./gtx/fast_exponential.hpp"
 #include "./gtx/fast_square_root.hpp"
 #include "./gtx/fast_trigonometry.hpp"
-<<<<<<< HEAD
-=======
-#include "./gtx/functions.hpp"
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtx/gradient_paint.hpp"
 #include "./gtx/handed_coordinate_space.hpp"
 #include "./gtx/integer.hpp"
@@ -286,7 +96,6 @@
 #include "./gtx/quaternion.hpp"
 #include "./gtx/raw_data.hpp"
 #include "./gtx/rotate_vector.hpp"
-<<<<<<< HEAD
 
 #include "./gtx/spline.hpp"
 #include "./gtx/std_based_type.hpp"
@@ -297,16 +106,6 @@
 
 #include "./gtx/transform.hpp"
 #include "./gtx/transform2.hpp"
-=======
-#include "./gtx/spline.hpp"
-#include "./gtx/std_based_type.hpp"
-#if !(GLM_COMPILER & GLM_COMPILER_CUDA)
-#	include "./gtx/string_cast.hpp"
-#endif
-#include "./gtx/transform.hpp"
-#include "./gtx/transform2.hpp"
-#include "./gtx/vec_swizzle.hpp"
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 #include "./gtx/vector_angle.hpp"
 #include "./gtx/vector_query.hpp"
 #include "./gtx/wrap.hpp"
@@ -318,7 +117,3 @@
 #if GLM_HAS_RANGE_FOR
 #	include "./gtx/range.hpp"
 #endif
-<<<<<<< HEAD
-=======
-#endif//GLM_ENABLE_EXPERIMENTAL
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8

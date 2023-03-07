@@ -1,5 +1,4 @@
 /// @ref gtx_wrap
-<<<<<<< HEAD
 /// @file glm/gtx/wrap.inl
 
 namespace glm
@@ -56,10 +55,4 @@ namespace glm
 	{
 		return mirrorRepeat(tvec1<genType, defaultp>(Texcoord)).x;
 	}
-=======
-
-namespace glm
-{
-
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 }//namespace glm

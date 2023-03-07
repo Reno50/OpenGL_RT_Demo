@@ -2,7 +2,6 @@
 /// @file glm/mat3x2.hpp
 
 #pragma once
-<<<<<<< HEAD
 
 #include "detail/type_mat3x2.hpp"
 
@@ -30,10 +29,3 @@ namespace glm
 	typedef tmat3x2<float, highp>		highp_mat3x2;
 
 }//namespace
-=======
-#include "./ext/matrix_double3x2.hpp"
-#include "./ext/matrix_double3x2_precision.hpp"
-#include "./ext/matrix_float3x2.hpp"
-#include "./ext/matrix_float3x2_precision.hpp"
-
->>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
