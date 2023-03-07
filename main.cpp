@@ -10,6 +10,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <homemade\shader_s.h>
 
 using namespace std;
@@ -105,13 +109,18 @@ int main() {
 
     if (catData) 
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, catData);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, catData);
+        glGenerateMipmap(GL_TEXTURE_2D); //This texture has to be RGBA
     }
 
     stbi_image_free(catData);
 
 
+    //Transformation matrix
+    glm::mat4 transMat = glm::mat4(1.0f);
+    transMat = glm::rotate(transMat, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+
+    //All the buffers
     unsigned int vertbufferobj, vertarrayobj, elembufferobj;
 
     glGenBuffers(1, &vertbufferobj);
@@ -143,6 +152,9 @@ int main() {
     mainShaders.use();
     mainShaders.setInt("forestTexture", 0);
     mainShaders.setInt("catTexture", 1);
+
+    unsigned int transformLocation = glGetUniformLocation(mainShaders.ID, "transform");
+    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transMat));
 
     while(!glfwWindowShouldClose(window)) {
 
