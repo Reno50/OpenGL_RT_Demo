@@ -1,15 +1,28 @@
 /// @ref gtx_integer
+<<<<<<< HEAD
 /// @file glm/gtx/integer.inl
+=======
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 namespace glm
 {
 	// pow
+<<<<<<< HEAD
 	GLM_FUNC_QUALIFIER int pow(int x, int y)
 	{
 		if(y == 0)
 			return 1;
 		int result = x;
 		for(int i = 1; i < y; ++i)
+=======
+	GLM_FUNC_QUALIFIER int pow(int x, uint y)
+	{
+		if(y == 0)
+			return x >= 0 ? 1 : -1;
+
+		int result = x;
+		for(uint i = 1; i < y; ++i)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			result *= x;
 		return result;
 	}
@@ -65,12 +78,21 @@ namespace detail
 	// mod
 	GLM_FUNC_QUALIFIER int mod(int x, int y)
 	{
+<<<<<<< HEAD
 		return x - y * (x / y);
 	}
 
 	// factorial (!12 max, integer only)
 	template <typename genType>
 	GLM_FUNC_QUALIFIER genType factorial(genType const & x)
+=======
+		return ((x % y) + y) % y;
+	}
+
+	// factorial (!12 max, integer only)
+	template<typename genType>
+	GLM_FUNC_QUALIFIER genType factorial(genType const& x)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		genType Temp = x;
 		genType Result;
@@ -79,30 +101,54 @@ namespace detail
 		return Result;
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec2<T, P> factorial(
 		tvec2<T, P> const & x)
 	{
 		return tvec2<T, P>(
+=======
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<2, T, Q> factorial(
+		vec<2, T, Q> const& x)
+	{
+		return vec<2, T, Q>(
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			factorial(x.x),
 			factorial(x.y));
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec3<T, P> factorial(
 		tvec3<T, P> const & x)
 	{
 		return tvec3<T, P>(
+=======
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<3, T, Q> factorial(
+		vec<3, T, Q> const& x)
+	{
+		return vec<3, T, Q>(
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			factorial(x.x),
 			factorial(x.y),
 			factorial(x.z));
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER tvec4<T, P> factorial(
 		tvec4<T, P> const & x)
 	{
 		return tvec4<T, P>(
+=======
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<4, T, Q> factorial(
+		vec<4, T, Q> const& x)
+	{
+		return vec<4, T, Q>(
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			factorial(x.x),
 			factorial(x.y),
 			factorial(x.z),
@@ -111,6 +157,12 @@ namespace detail
 
 	GLM_FUNC_QUALIFIER uint pow(uint x, uint y)
 	{
+<<<<<<< HEAD
+=======
+		if (y == 0)
+			return 1u;
+
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		uint result = x;
 		for(uint i = 1; i < y; ++i)
 			result *= x;
@@ -140,7 +192,11 @@ namespace detail
 
 #if(GLM_COMPILER & (GLM_COMPILER_VC | GLM_COMPILER_GCC))
 
+<<<<<<< HEAD
 	GLM_FUNC_QUALIFIER unsigned int nlz(unsigned int x) 
+=======
+	GLM_FUNC_QUALIFIER unsigned int nlz(unsigned int x)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		return 31u - findMSB(x);
 	}
@@ -148,7 +204,11 @@ namespace detail
 #else
 
 	// Hackers Delight: http://www.hackersdelight.org/HDcode/nlz.c.txt
+<<<<<<< HEAD
 	GLM_FUNC_QUALIFIER unsigned int nlz(unsigned int x) 
+=======
+	GLM_FUNC_QUALIFIER unsigned int nlz(unsigned int x)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		int y, m, n;
 

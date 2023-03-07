@@ -6,6 +6,7 @@
 /// @defgroup gtx_type_trait GLM_GTX_type_trait
 /// @ingroup gtx
 ///
+<<<<<<< HEAD
 /// @brief Defines traits for each type.
 ///
 /// <glm/gtx/type_trait.hpp> need to be included to use these functionalities.
@@ -32,12 +33,37 @@
 #	pragma message("GLM: GLM_GTX_type_trait extension included")
 #endif
 
+=======
+/// Include <glm/gtx/type_trait.hpp> to use the features of this extension.
+///
+/// Defines traits for each type.
+
+#pragma once
+
+#if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
+#	ifndef GLM_ENABLE_EXPERIMENTAL
+#		pragma message("GLM: GLM_GTX_type_trait is an experimental extension and may change in the future. Use #define GLM_ENABLE_EXPERIMENTAL before including it, if you really want to use it.")
+#	else
+#		pragma message("GLM: GLM_GTX_type_trait extension included")
+#	endif
+#endif
+
+// Dependency:
+#include "../detail/qualifier.hpp"
+#include "../gtc/quaternion.hpp"
+#include "../gtx/dual_quaternion.hpp"
+
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 namespace glm
 {
 	/// @addtogroup gtx_type_trait
 	/// @{
 
+<<<<<<< HEAD
 	template <template <typename, precision> class genType, typename T, precision P>
+=======
+	template<typename T>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	struct type
 	{
 		static bool const is_vec = false;
@@ -48,12 +74,18 @@ namespace glm
 		static length_t const rows = 0;
 	};
 
+<<<<<<< HEAD
 	template <typename T, precision P>
 	struct type<tvec1, T, P>
+=======
+	template<length_t L, typename T, qualifier Q>
+	struct type<vec<L, T, Q> >
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		static bool const is_vec = true;
 		static bool const is_mat = false;
 		static bool const is_quat = false;
+<<<<<<< HEAD
 		enum
 		{
 			components = 1
@@ -98,10 +130,18 @@ namespace glm
 
 	template <typename T, precision P>
 	struct type<tmat2x2, T, P>
+=======
+		static length_t const components = L;
+	};
+
+	template<length_t C, length_t R, typename T, qualifier Q>
+	struct type<mat<C, R, T, Q> >
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		static bool const is_vec = false;
 		static bool const is_mat = true;
 		static bool const is_quat = false;
+<<<<<<< HEAD
 		enum
 		{
 			components = 2,
@@ -224,10 +264,20 @@ namespace glm
 
 	template <typename T, precision P>
 	struct type<tquat, T, P>
+=======
+		static length_t const components = C;
+		static length_t const cols = C;
+		static length_t const rows = R;
+	};
+
+	template<typename T, qualifier Q>
+	struct type<qua<T, Q> >
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		static bool const is_vec = false;
 		static bool const is_mat = false;
 		static bool const is_quat = true;
+<<<<<<< HEAD
 		enum
 		{
 			components = 4
@@ -236,14 +286,25 @@ namespace glm
 
 	template <typename T, precision P>
 	struct type<tdualquat, T, P>
+=======
+		static length_t const components = 4;
+	};
+
+	template<typename T, qualifier Q>
+	struct type<tdualquat<T, Q> >
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		static bool const is_vec = false;
 		static bool const is_mat = false;
 		static bool const is_quat = true;
+<<<<<<< HEAD
 		enum
 		{
 			components = 8
 		};
+=======
+		static length_t const components = 8;
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	};
 
 	/// @}

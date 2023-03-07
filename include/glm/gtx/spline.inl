@@ -1,4 +1,5 @@
 /// @ref gtx_spline
+<<<<<<< HEAD
 /// @file glm/gtx/spline.inl
 
 namespace glm
@@ -14,6 +15,21 @@ namespace glm
 	)
 	{
 		typename genType::value_type s1 = s;
+=======
+
+namespace glm
+{
+	template<typename genType>
+	GLM_FUNC_QUALIFIER genType catmullRom
+	(
+		genType const& v1,
+		genType const& v2,
+		genType const& v3,
+		genType const& v4,
+		typename genType::value_type const& s
+	)
+	{
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		typename genType::value_type s2 = pow2(s);
 		typename genType::value_type s3 = pow3(s);
 
@@ -26,6 +42,7 @@ namespace glm
 
 	}
 
+<<<<<<< HEAD
 	template <typename genType>
 	GLM_FUNC_QUALIFIER genType hermite
 	(
@@ -37,6 +54,18 @@ namespace glm
 	)
 	{
 		typename genType::value_type s1 = s;
+=======
+	template<typename genType>
+	GLM_FUNC_QUALIFIER genType hermite
+	(
+		genType const& v1,
+		genType const& t1,
+		genType const& v2,
+		genType const& t2,
+		typename genType::value_type const& s
+	)
+	{
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		typename genType::value_type s2 = pow2(s);
 		typename genType::value_type s3 = pow3(s);
 
@@ -48,6 +77,7 @@ namespace glm
 		return f1 * v1 + f2 * v2 + f3 * t1 + f4 * t2;
 	}
 
+<<<<<<< HEAD
 	template <typename genType>
 	GLM_FUNC_QUALIFIER genType cubic
 	(
@@ -56,6 +86,16 @@ namespace glm
 		genType const & v3, 
 		genType const & v4, 
 		typename genType::value_type const & s
+=======
+	template<typename genType>
+	GLM_FUNC_QUALIFIER genType cubic
+	(
+		genType const& v1,
+		genType const& v2,
+		genType const& v3,
+		genType const& v4,
+		typename genType::value_type const& s
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	)
 	{
 		return ((v1 * s + v2) * s + v3) * s + v4;

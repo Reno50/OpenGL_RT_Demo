@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 /// @ref core
 /// @file glm/detail/type_half.inl
 
+=======
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 namespace glm{
 namespace detail
 {
@@ -8,7 +11,11 @@ namespace detail
 	{
 		volatile float f = 1e10;
 
+<<<<<<< HEAD
 		for(int i = 0; i < 10; ++i)	
+=======
+		for(int i = 0; i < 10; ++i)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			f *= f; // this will overflow before the for loop terminates
 		return f;
 	}
@@ -23,12 +30,20 @@ namespace detail
 			f(f_)
 		{}
 
+<<<<<<< HEAD
 		GLM_FUNC_QUALIFIER uif32(uint32 i_) :
+=======
+		GLM_FUNC_QUALIFIER uif32(unsigned int i_) :
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 			i(i_)
 		{}
 
 		float f;
+<<<<<<< HEAD
 		uint32 i;
+=======
+		unsigned int i;
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	};
 
 	GLM_FUNC_QUALIFIER float toFloat32(hdata value)
@@ -46,7 +61,11 @@ namespace detail
 				//
 
 				detail::uif32 result;
+<<<<<<< HEAD
 				result.i = (unsigned int)(s << 31);
+=======
+				result.i = static_cast<unsigned int>(s << 31);
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 				return result.f;
 			}
 			else
@@ -74,7 +93,11 @@ namespace detail
 				//
 
 				uif32 result;
+<<<<<<< HEAD
 				result.i = (unsigned int)((s << 31) | 0x7f800000);
+=======
+				result.i = static_cast<unsigned int>((s << 31) | 0x7f800000);
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 				return result.f;
 			}
 			else
@@ -84,7 +107,11 @@ namespace detail
 				//
 
 				uif32 result;
+<<<<<<< HEAD
 				result.i = (unsigned int)((s << 31) | 0x7f800000 | (m << 13));
+=======
+				result.i = static_cast<unsigned int>((s << 31) | 0x7f800000 | (m << 13));
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 				return result.f;
 			}
 		}
@@ -101,6 +128,7 @@ namespace detail
 		//
 
 		uif32 Result;
+<<<<<<< HEAD
 		Result.i = (unsigned int)((s << 31) | (e << 23) | m);
 		return Result.f;
 	}
@@ -110,12 +138,27 @@ namespace detail
 		uif32 Entry;
 		Entry.f = f;
 		int i = (int)Entry.i;
+=======
+		Result.i = static_cast<unsigned int>((s << 31) | (e << 23) | m);
+		return Result.f;
+	}
+
+	GLM_FUNC_QUALIFIER hdata toFloat16(float const& f)
+	{
+		uif32 Entry;
+		Entry.f = f;
+		int i = static_cast<int>(Entry.i);
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 		//
 		// Our floating point number, f, is represented by the bit
 		// pattern in integer i.  Disassemble that bit pattern into
 		// the sign, s, the exponent, e, and the significand, m.
+<<<<<<< HEAD
 		// Shift s into the position where it will go in in the
+=======
+		// Shift s into the position where it will go in the
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		// resulting half number.
 		// Adjust e, accounting for the different exponent bias
 		// of float and half (127 versus 15).
@@ -149,7 +192,11 @@ namespace detail
 			// whose magnitude is less than __half_NRM_MIN.
 			//
 			// We convert f to a denormalized half.
+<<<<<<< HEAD
 			// 
+=======
+			//
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 			m = (m | 0x00800000) >> (1 - e);
 
@@ -160,9 +207,15 @@ namespace detail
 			// our number normalized.  Because of the way a half's bits
 			// are laid out, we don't have to treat this case separately;
 			// the code below will handle it correctly.
+<<<<<<< HEAD
 			// 
 
 			if(m & 0x00001000) 
+=======
+			//
+
+			if(m & 0x00001000)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 				m += 0x00002000;
 
 			//
@@ -188,7 +241,11 @@ namespace detail
 				// F is a NAN; we produce a half NAN that preserves
 				// the sign bit and the 10 leftmost bits of the
 				// significand of f, with one exception: If the 10
+<<<<<<< HEAD
 				// leftmost bits are all zero, the NAN would turn 
+=======
+				// leftmost bits are all zero, the NAN would turn
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 				// into an infinity, so we have to set at least one
 				// bit in the significand.
 				//

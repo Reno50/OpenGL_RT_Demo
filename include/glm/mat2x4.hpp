@@ -2,6 +2,7 @@
 /// @file glm/mat2x4.hpp
 
 #pragma once
+<<<<<<< HEAD
 
 #include "detail/type_mat2x4.hpp"
 
@@ -29,3 +30,10 @@ namespace glm
 	typedef tmat2x4<float, highp>		highp_mat2x4;
 
 }//namespace glm
+=======
+#include "./ext/matrix_double2x4.hpp"
+#include "./ext/matrix_double2x4_precision.hpp"
+#include "./ext/matrix_float2x4.hpp"
+#include "./ext/matrix_float2x4_precision.hpp"
+
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8

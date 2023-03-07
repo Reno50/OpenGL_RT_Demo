@@ -1,22 +1,38 @@
 /// @ref gtx_fast_exponential
+<<<<<<< HEAD
 /// @file glm/gtx/fast_exponential.inl
+=======
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 namespace glm
 {
 	// fastPow:
+<<<<<<< HEAD
 	template <typename genType>
+=======
+	template<typename genType>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER genType fastPow(genType x, genType y)
 	{
 		return exp(y * log(x));
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastPow(vecType<T, P> const & x, vecType<T, P> const & y)
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastPow(vec<L, T, Q> const& x, vec<L, T, Q> const& y)
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	{
 		return exp(y * log(x));
 	}
 
+<<<<<<< HEAD
 	template <typename T>
+=======
+	template<typename T>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER T fastPow(T x, int y)
 	{
 		T f = static_cast<T>(1);
@@ -25,10 +41,17 @@ namespace glm
 		return f;
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastPow(vecType<T, P> const & x, vecType<int, P> const & y)
 	{
 		vecType<T, P> Result(uninitialize);
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastPow(vec<L, T, Q> const& x, vec<L, int, Q> const& y)
+	{
+		vec<L, T, Q> Result;
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 		for(length_t i = 0, n = x.length(); i < n; ++i)
 			Result[i] = fastPow(x[i], y[i]);
 		return Result;
@@ -36,7 +59,11 @@ namespace glm
 
 	// fastExp
 	// Note: This function provides accurate results only for value between -1 and 1, else avoid it.
+<<<<<<< HEAD
 	template <typename T>
+=======
+	template<typename T>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER T fastExp(T x)
 	{
 		// This has a better looking and same performance in release mode than the following code. However, in debug mode it's slower.
@@ -81,6 +108,7 @@ namespace glm
 	}
 	*/
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastExp(vecType<T, P> const & x)
 	{
@@ -89,6 +117,16 @@ namespace glm
 
 	// fastLog
 	template <typename genType>
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastExp(vec<L, T, Q> const& x)
+	{
+		return detail::functor1<vec, L, T, T, Q>::call(fastExp, x);
+	}
+
+	// fastLog
+	template<typename genType>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER genType fastLog(genType x)
 	{
 		return std::log(x);
@@ -103,6 +141,7 @@ namespace glm
 	}
 	*/
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastLog(vecType<T, P> const & x)
 	{
@@ -111,11 +150,22 @@ namespace glm
 
 	//fastExp2, ln2 = 0.69314718055994530941723212145818f
 	template <typename genType>
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastLog(vec<L, T, Q> const& x)
+	{
+		return detail::functor1<vec, L, T, T, Q>::call(fastLog, x);
+	}
+
+	//fastExp2, ln2 = 0.69314718055994530941723212145818f
+	template<typename genType>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER genType fastExp2(genType x)
 	{
 		return fastExp(0.69314718055994530941723212145818f * x);
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastExp2(vecType<T, P> const & x)
 	{
@@ -124,14 +174,31 @@ namespace glm
 
 	// fastLog2, ln2 = 0.69314718055994530941723212145818f
 	template <typename genType>
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastExp2(vec<L, T, Q> const& x)
+	{
+		return detail::functor1<vec, L, T, T, Q>::call(fastExp2, x);
+	}
+
+	// fastLog2, ln2 = 0.69314718055994530941723212145818f
+	template<typename genType>
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	GLM_FUNC_QUALIFIER genType fastLog2(genType x)
 	{
 		return fastLog(x) / 0.69314718055994530941723212145818f;
 	}
 
+<<<<<<< HEAD
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<T, P> fastLog2(vecType<T, P> const & x)
 	{
 		return detail::functor1<T, T, P, vecType>::call(fastLog2, x);
+=======
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> fastLog2(vec<L, T, Q> const& x)
+	{
+		return detail::functor1<vec, L, T, T, Q>::call(fastLog2, x);
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 	}
 }//namespace glm

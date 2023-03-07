@@ -5,13 +5,21 @@
 ///
 /// @defgroup gtc_vec1 GLM_GTC_vec1
 /// @ingroup gtc
+<<<<<<< HEAD
 /// 
 /// @brief Add vec1, ivec1, uvec1 and bvec1 types.
 /// <glm/gtc/vec1.hpp> need to be included to use these functionalities.
+=======
+///
+/// Include <glm/gtc/vec1.hpp> to use the features of this extension.
+///
+/// Add vec1, ivec1, uvec1 and bvec1 types.
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
 
 #pragma once
 
 // Dependency:
+<<<<<<< HEAD
 #include "../glm.hpp"
 #include "../detail/type_vec1.hpp"
 
@@ -162,3 +170,20 @@ namespace glm
 }// namespace glm
 
 #include "vec1.inl"
+=======
+#include "../ext/vector_bool1.hpp"
+#include "../ext/vector_bool1_precision.hpp"
+#include "../ext/vector_float1.hpp"
+#include "../ext/vector_float1_precision.hpp"
+#include "../ext/vector_double1.hpp"
+#include "../ext/vector_double1_precision.hpp"
+#include "../ext/vector_int1.hpp"
+#include "../ext/vector_int1_sized.hpp"
+#include "../ext/vector_uint1.hpp"
+#include "../ext/vector_uint1_sized.hpp"
+
+#if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
+#	pragma message("GLM: GLM_GTC_vec1 extension included")
+#endif
+
+>>>>>>> 50922f5810200b1e13462f7930ab97db75af0ed8
