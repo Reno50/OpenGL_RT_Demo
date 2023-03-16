@@ -57,10 +57,10 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     float vertices[] = {  //Vertices (3) + Colors (3) + Tex Coords (2)
-        -0.8f, -0.9f, 0.0f,   0.1f, 0.9f, 0.0f,   0.0f, 0.0f,//Bottom Left
-        0.5f, -0.6f, 0.0f,    0.9f, 0.1f, 0.0f,   1.0f, 0.0f,//Bottom Right
-        0.8f,  0.9f, 0.0f,    0.0f, 0.1f, 0.9f,   1.0f, 1.0f,//Top Right
-        -0.5f, 0.6f, 0.0f,    0.9f, 0.9f, 0.0f,   0.0f, 1.0f //Top Left
+        -0.8f, -0.8f, 0.0f,   0.1f, 0.9f, 0.0f,   0.0f, 0.0f,//Bottom Left
+        0.8f, -0.8f, 0.0f,    0.9f, 0.1f, 0.0f,   1.0f, 0.0f,//Bottom Right
+        0.8f,  0.8f, 0.0f,    0.0f, 0.1f, 0.9f,   1.0f, 1.0f,//Top Right
+        -0.8f, 0.8f, 0.0f,    0.9f, 0.9f, 0.0f,   0.0f, 1.0f //Top Left
     };  
 
     unsigned int indices[] = {
@@ -120,9 +120,15 @@ int main() {
     stbi_image_free(catData);
 
 
-    //Transformation matrix
-    glm::mat4 transMat = glm::mat4(1.0f);
-    transMat = glm::rotate(transMat, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    //Model matrix
+    float rotationAngle = 10.0f;
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    //View matrix
+    glm::mat4 viewMat = glm::mat4(1.0f);
+    viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -3.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
+    //Keep in mind that the +z axis is backwards, imagine moving the screen closer to your face and thats pretty much it
+    //Projection matrix
+    glm::mat4 projectionMat = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.01f, 100.0f);
 
     //All the buffers
     unsigned int vertbufferobj, vertarrayobj, elembufferobj;
@@ -157,17 +163,29 @@ int main() {
     mainShaders.setInt("forestTexture", 0);
     mainShaders.setInt("catTexture", 1);
 
-    unsigned int transformLocation = glGetUniformLocation(mainShaders.ID, "transform");
-    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transMat));
-
     while(!glfwWindowShouldClose(window)) {
 
         //Input shenanigans function
+
         processInput(window);
         
         //Rendering stuff here
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        //Transformation stuff
+
+        rotationAngle = (float)glfwGetTime() * 5.0f;
+        modelMat = glm::mat4(1.0f);
+        modelMat = glm::rotate(modelMat, glm::radians(rotationAngle), glm::vec3(1.0, 0.0, 0.0));
+
+        unsigned int modelLocation = glGetUniformLocation(mainShaders.ID, "model");
+        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(modelMat));
+        unsigned int viewLocation = glGetUniformLocation(mainShaders.ID, "view");
+        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
+        unsigned int projectionLocation = glGetUniformLocation(mainShaders.ID, "projection");
+        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
         //Bind textures and activate shaders
 
