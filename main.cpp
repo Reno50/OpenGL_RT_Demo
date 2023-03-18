@@ -70,7 +70,7 @@ int main() {
         1, 2, 3  //Second Triangle
         };
 
-    ShapeConstructor scon = ShapeConstructor(2);
+    float (*icoVerts)[3] = IcosahedronVerts(1.0f); //Some strange pointer magic we have here
 
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
