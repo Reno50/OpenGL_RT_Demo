@@ -58,19 +58,28 @@ int main() {
     //Construct the viewport
     glViewport(0, 0, 1600, 900);
 
-    float vertices[] = {  //Vertices (3) + Tex Coords (2)
-        -0.8f, -0.8f, 0.0f,   0.0f, 0.0f,//Bottom Left
-        0.8f, -0.8f, 0.0f,    1.0f, 0.0f,//Bottom Right
-        0.8f,  0.8f, 0.0f,    1.0f, 1.0f,//Top Right
-        -0.8f, 0.8f, 0.0f,    0.0f, 1.0f //Top Left
-    };  
+    float vertices[60];  //Vertices (3) + Tex Coords (2)
 
-    unsigned int indices[] = {
-        0, 1, 3, //First Triangle
-        1, 2, 3  //Second Triangle
-        };
+    float* icoVerts = IcosahedronVerts(1.0f); //Some strange pointer things here
 
-    float (*icoVerts)[3] = IcosahedronVerts(1.0f); //Some strange pointer magic we have here
+    int secCount = 0;
+
+    for (int i = 0; i < 36; i+=3) {
+        vertices[secCount] = icoVerts[i];
+        vertices[secCount + 1] = icoVerts[i + 1];
+        vertices[secCount + 2] = icoVerts[i + 2];
+        vertices[secCount + 3] = 0.3f * (i%3);
+        vertices[secCount + 4] = 0.1f * (i%3);
+        secCount += 5;
+    }
+
+    int *icoIndices = IcosahedronIndices(); //Same stuff here, might need to be unsigned?
+
+    unsigned int indices[60];
+
+    for (int j = 0; j < 60; j+=1) {
+        indices[j] = (unsigned int) icoIndices[j];
+    }
 
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
@@ -129,7 +138,7 @@ int main() {
     glm::mat4 modelMat = glm::mat4(1.0f);
     //View matrix
     glm::mat4 viewMat = glm::mat4(1.0f);
-    viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -3.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
+    viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -10.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
     //Keep in mind that the +z axis is backwards, imagine moving the screen closer to your face and thats pretty much it
     //Projection matrix
     glm::mat4 projectionMat = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.01f, 100.0f);
