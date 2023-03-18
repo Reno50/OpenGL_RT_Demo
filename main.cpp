@@ -20,6 +20,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <homemade\constructshape.cpp>
+
 using namespace std;
 
 const unsigned int SCR_WIDTH = 1920;
@@ -54,19 +56,21 @@ int main() {
     }
 
     //Construct the viewport
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 1600, 900);
 
-    float vertices[] = {  //Vertices (3) + Colors (3) + Tex Coords (2)
-        -0.8f, -0.8f, 0.0f,   0.1f, 0.9f, 0.0f,   0.0f, 0.0f,//Bottom Left
-        0.8f, -0.8f, 0.0f,    0.9f, 0.1f, 0.0f,   1.0f, 0.0f,//Bottom Right
-        0.8f,  0.8f, 0.0f,    0.0f, 0.1f, 0.9f,   1.0f, 1.0f,//Top Right
-        -0.8f, 0.8f, 0.0f,    0.9f, 0.9f, 0.0f,   0.0f, 1.0f //Top Left
+    float vertices[] = {  //Vertices (3) + Tex Coords (2)
+        -0.8f, -0.8f, 0.0f,   0.0f, 0.0f,//Bottom Left
+        0.8f, -0.8f, 0.0f,    1.0f, 0.0f,//Bottom Right
+        0.8f,  0.8f, 0.0f,    1.0f, 1.0f,//Top Right
+        -0.8f, 0.8f, 0.0f,    0.0f, 1.0f //Top Left
     };  
 
     unsigned int indices[] = {
         0, 1, 3, //First Triangle
         1, 2, 3  //Second Triangle
         };
+
+    ShapeConstructor scon = ShapeConstructor(2);
 
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
@@ -149,12 +153,10 @@ int main() {
     //Shader class stuff
     CreShader mainShaders = CreShader("shaders/testvert.glsl", "shaders/testfrag.glsl");
     //Attrib index, # of datas(?) in attrib, type of attrib, normalized(?) usually false, stride (same for all attribs in same array, pointer to offset)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 
     //Complicated way --> glUniform1i(glGetUniformLocation(mainShaders.ID, "forestTexture"), 0);
     //Simple way --> mainShaders.setInt("forestTexture", 0);
