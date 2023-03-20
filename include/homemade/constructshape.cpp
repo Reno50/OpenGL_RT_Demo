@@ -109,13 +109,13 @@ float* PyramidVerts(float radius) { //Returning texture coordinates and vertices
     //Construct the vertex array, top first, then each side vertex (clockwise)
     static float vertexArray[20] = {
         0, radius, 0, //topmost point
-        0.5f, 1.0f,
+        0.5f, 0.2875f,
         radius/2, 0, 0, //rightmost point
-        1.0f, 0.0f,
+        1.0f, 0.575f,
         -rootthreeovertwo*radius, 0, radius/2, //closer leftmost point
-        0.0f, 0.0f,
+        0.5f, 1.0f,
         -rootthreeovertwo*radius, 0, radius/-2, //farther leftmost point
-        1.0f, 0.0f
+        0.0f, 0.575f
     };
 
     return vertexArray;
