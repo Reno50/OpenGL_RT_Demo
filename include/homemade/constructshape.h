@@ -1,8 +1,12 @@
 #ifndef CONSTRUCTSHAPE_H
 #define CONSTRUCTSHAPE_H
 
-float (*IcosahedronVerts(float circumRad))[3];
+float* IcosahedronVerts(float circumRad);
 
-int (*IcosahedronIndices())[3];
+int* IcosahedronIndices();
+
+float* PyramidVerts(float radius);
+
+int* PyramidIndices();
 
 #endif
