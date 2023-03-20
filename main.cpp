@@ -58,28 +58,25 @@ int main() {
     //Construct the viewport
     glViewport(0, 0, 1600, 900);
 
-    float vertices[60];  //Vertices (3) + Tex Coords (2)
+    glEnable(GL_DEPTH_TEST);
 
-    float* icoVerts = IcosahedronVerts(1.0f); //Some strange pointer things here
+    float *pyraVertices = PyramidVerts(1.0f);
 
-    int secCount = 0;
+    int *pyraIndices = PyramidIndices();
 
-    for (int i = 0; i < 36; i+=3) {
-        vertices[secCount] = icoVerts[i];
-        vertices[secCount + 1] = icoVerts[i + 1];
-        vertices[secCount + 2] = icoVerts[i + 2];
-        vertices[secCount + 3] = 0.3f * (i%3);
-        vertices[secCount + 4] = 0.1f * (i%3);
-        secCount += 5;
+    float vertices[20];
+
+    int indices[12];
+
+    for (int i = 0; i < 20; i++) {
+        vertices[i] = pyraVertices[i];
     }
 
-    int *icoIndices = IcosahedronIndices(); //Same stuff here, might need to be unsigned?
-
-    unsigned int indices[60];
-
-    for (int j = 0; j < 60; j+=1) {
-        indices[j] = (unsigned int) icoIndices[j];
+    for (int j = 0; j < 12; j++) {
+        indices[j] = pyraIndices[j];
     }
+
+    std::cout << indices[0] << indices[1] << vertices[0] << vertices[1] << std::endl;
 
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
@@ -138,10 +135,10 @@ int main() {
     glm::mat4 modelMat = glm::mat4(1.0f);
     //View matrix
     glm::mat4 viewMat = glm::mat4(1.0f);
-    viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -10.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
+    viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -5.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
     //Keep in mind that the +z axis is backwards, imagine moving the screen closer to your face and thats pretty much it
     //Projection matrix
-    glm::mat4 projectionMat = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.01f, 100.0f);
+    glm::mat4 projectionMat = glm::perspective(glm::radians(40.0f), 16.0f / 9.0f, 0.01f, 100.0f);
 
     //All the buffers
     unsigned int vertbufferobj, vertarrayobj, elembufferobj;
@@ -174,6 +171,8 @@ int main() {
     mainShaders.setInt("forestTexture", 0);
     mainShaders.setInt("catTexture", 1);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     while(!glfwWindowShouldClose(window)) {
 
         //Input shenanigans function
@@ -182,12 +181,12 @@ int main() {
         
         //Rendering stuff here
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clearin the depth buffer is important too
 
         //Transformation stuff
 
-        rotationAngle = (float)glfwGetTime() * 5.0f;
+        rotationAngle = (float)glfwGetTime() * 15.0f;
         modelMat = glm::mat4(1.0f);
         modelMat = glm::rotate(modelMat, glm::radians(rotationAngle), glm::vec3(1.0, 0.0, 0.0));
 
@@ -211,7 +210,7 @@ int main() {
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
         glBindVertexArray(vertarrayobj);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    

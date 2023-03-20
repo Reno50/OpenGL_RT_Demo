@@ -15,8 +15,8 @@ float* IcosahedronVerts(float circumRad) { //This used to return an array of poi
     static float vertexArray[36] = {
         0, circumRad, golden * circumRad, 0, circumRad, -golden * circumRad, circumRad, golden * circumRad, 0, golden * circumRad, 0, circumRad, -golden * circumRad, 0, circumRad, -circumRad,
         golden * circumRad, 0, circumRad, -golden * circumRad, 0, golden * circumRad, 0, -circumRad, -circumRad, -golden * circumRad, 0, -golden * circumRad,
-        0, -circumRad, 0, -circumRad, golden * circumRad, 0, -circumRad, -golden * circumRad
-    };
+        0, -circumRad, 0, -circumRad, golden * circumRad, 0, -circumRad, -golden * circumRad};
+
     
     //This is all the verticies and they were a pain to manually do so hopefully they are correct
 
@@ -30,7 +30,7 @@ float* IcosahedronVerts(float circumRad) { //This used to return an array of poi
     return vertexArray;
 }
 
-int (*IcosahedronIndices()) { //Same drill, returns the array of pointers to each 3 value index array
+int* IcosahedronIndices() { //Same drill, returns the array of pointers to each 3 value index array
 
     //The icosahedron will have 12 vertices, and 20 faces
 
@@ -100,5 +100,36 @@ int (*IcosahedronIndices()) { //Same drill, returns the array of pointers to eac
     indexArray[58] = 11;
     indexArray[59] = 2;
     //Done!
+    return indexArray;
+}
+
+float* PyramidVerts(float radius) { //Returning texture coordinates and vertices in the same array
+    float rootthreeovertwo = sqrt(3) / 2;
+    
+    //Construct the vertex array, top first, then each side vertex (clockwise)
+    static float vertexArray[20] = {
+        0, radius, 0, //topmost point
+        0.5f, 1.0f,
+        radius/2, 0, 0, //rightmost point
+        1.0f, 0.0f,
+        -rootthreeovertwo*radius, 0, radius/2, //closer leftmost point
+        0.0f, 0.0f,
+        -rootthreeovertwo*radius, 0, radius/-2, //farther leftmost point
+        1.0f, 0.0f
+    };
+
+    return vertexArray;
+}
+
+int* PyramidIndices() {
+
+    //Handle faces clockwise starting at the back-right face and ending at the bottom
+    static int indexArray[12] = {
+        0, 3, 1,
+        0, 1, 2,
+        0, 2, 3,
+        1, 2, 3
+    };
+
     return indexArray;
 }
