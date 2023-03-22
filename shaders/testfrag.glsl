@@ -3,7 +3,6 @@ out vec4 FragColor;
 
 in vec2 TexCoord;
 
-uniform sampler2D forestTexture;
 uniform sampler2D catTexture;
 
 void main()
