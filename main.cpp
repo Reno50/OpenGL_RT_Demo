@@ -92,8 +92,6 @@ int main() {
         indices[j] = pyraIndices[j];
     }
 
-    std::cout << indices[0] << indices[1] << vertices[0] << vertices[1] << std::endl;
-
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
     //I should probably loop this process at some point
@@ -159,7 +157,7 @@ int main() {
     //Shaders for pyramid
 
     //Shader class stuff
-    CreShader mainShaders = CreShader("shaders/testvert.glsl", "shaders/testfrag.glsl");
+    //CreShader mainShaders = CreShader("shaders/testvert.glsl", "shaders/testfrag.glsl");
 
     CreShader lightShader = CreShader("shaders/lightvert.glsl", "shaders/lightfrag.glsl");
     
@@ -167,23 +165,23 @@ int main() {
 
     //Complicated way --> glUniform1i(glGetUniformLocation(mainShaders.ID, "forestTexture"), 0);
     //Simple way --> mainShaders.setInt("forestTexture", 0);
-    
-    mainShaders.use();
-    mainShaders.setInt("catTexture", 0);
 
     lightShader.use();
     lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
     lightSourceShader.use();
-    lightSourceShader.setVec3("sourceColor", 1.0f, 0.9f, 0.9f);
+    lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
 
     //Buffers and vertices for the light object
     
     float lightVertices[] = {
-        -0.5f, -0.5f, -2.0f,
-        0.5f, -0.5f, -2.0f,
-        0.0f,  0.5f, -2.0f
+        0.0f, 1.0f, 0.0f, // Topmost point
+        1.0f, 0.0f, 0.0f, // Rightmost point
+        0.0f, 0.0f, 1.0f, // Closest to camera point
+        0.0f, 1.0f, 0.0f, // Topmost point
+        -1.0f,0.0f, 0.0f, // Leftmost point
+        0.0f, 0.0f, 1.0f // Closest to camera point
     }; 
 
     unsigned int LVBO, LVAO; // Light vertex buffer object and light vertex array object 
@@ -207,38 +205,33 @@ int main() {
 
     while(!glfwWindowShouldClose(window)) {
 
-        //Timing
+        // Timing
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        //Input shenanigans function
+        // Input shenanigans function
 
         processInput(window);
         
-        //Rendering stuff here
+        // Rendering stuff here
 
         glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clearin the depth buffer is important too
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clearin the depth buffer is important too
+
+        lightShader.use();
+        lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 
         //Transformation stuff
         modelMat = glm::mat4(1.0f);
-        unsigned int modelLocation = glGetUniformLocation(mainShaders.ID, "model");
+        unsigned int modelLocation = glGetUniformLocation(lightShader.ID, "model");
         glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(modelMat));
-        unsigned int viewLocation = glGetUniformLocation(mainShaders.ID, "view");
+        unsigned int viewLocation = glGetUniformLocation(lightShader.ID, "view");
         viewMat = camera.GetViewMatrix();
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
-        unsigned int projectionLocation = glGetUniformLocation(mainShaders.ID, "projection");
+        unsigned int projectionLocation = glGetUniformLocation(lightShader.ID, "projection");
         glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-        //Bind textures and activate shaders
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, catTexture);
-
-        mainShaders.use();
-
-        //Bind and render the vertex/element buffer
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
         glBindVertexArray(vertarrayobj);
@@ -246,23 +239,24 @@ int main() {
 
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
-        //Now bind the light object's buffers and shaders
+        //Now bind the light source object's buffers and shaders
 
-        //lightSourceShader.use();
+        lightSourceShader.use();
 
         //Transformation stuff
-        //lightSourceMat = glm::mat4(1.0f);
-        //glm::translate(lightSourceMat, glm::vec3(3.0f, 0.0f, 0.0f));
+        lightSourceMat = glm::mat4(1.0f);
+        //glm::translate(lightSourceMat, glm::vec3(5.0f, 0.0f, 5.0f));
 
-        //unsigned int lightSourceMatLocation = glGetUniformLocation(lightSourceShader.ID, "model");
-        //glUniformMatrix4fv(lightSourceMatLocation, 1, GL_FALSE, glm::value_ptr(lightSourceMat));
-        //unsigned int lightViewLocation = glGetUniformLocation(lightSourceShader.ID, "view");
-        //glUniformMatrix4fv(lightViewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
-        //unsigned int lightProjectionLocation = glGetUniformLocation(lightSourceShader.ID, "projection");
-        //glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
+        unsigned int lightSourceMatLocation = glGetUniformLocation(lightSourceShader.ID, "model");
+        glUniformMatrix4fv(lightSourceMatLocation, 1, GL_FALSE, glm::value_ptr(lightSourceMat));
+        unsigned int lightViewLocation = glGetUniformLocation(lightSourceShader.ID, "view");
+        glUniformMatrix4fv(lightViewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
+        unsigned int lightProjectionLocation = glGetUniformLocation(lightSourceShader.ID, "projection");
+        glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
         
-        //glBindVertexArray(LVAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(LVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, LVBO);
+        glDrawArrays(GL_TRIANGLES, 0, 18);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
@@ -273,7 +267,7 @@ int main() {
     glDeleteBuffers(1, &elembufferobj);
     glDeleteBuffers(1, &LVBO);
     glDeleteVertexArrays(1, &LVAO);
-    mainShaders.delet();
+    //mainShaders.delet();
     lightShader.delet();
     lightSourceShader.delet();
 
