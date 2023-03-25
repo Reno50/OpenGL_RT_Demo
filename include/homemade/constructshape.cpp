@@ -118,6 +118,8 @@ float* PyramidVerts(float radius) { //Returning texture coordinates and vertices
         0.0f, 0.575f
     };
 
+    // Use via float *pyraVertices = PyramidVerts(1.0f);
+
     return vertexArray;
 }
 
