@@ -76,21 +76,18 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    float *pyraVertices = PyramidVerts(1.0f);
+    // Light vertices
+    float lightVertices[] = {
+        0.0f, 1.0f, 0.0f, // Top left point
+        1.0f, 1.0f, 0.0f, // Top right point
+        0.0f, 0.0f, 0.0f, // Bottom left point
+        1.0f, 0.0f, 0.0f  // Bottom right point
+    }; 
 
-    int *pyraIndices = PyramidIndices();
-
-    float vertices[20];
-
-    int indices[12];
-
-    for (int i = 0; i < 20; i++) {
-        vertices[i] = pyraVertices[i];
-    }
-
-    for (int j = 0; j < 12; j++) {
-        indices[j] = pyraIndices[j];
-    }
+    int lightIndices[] {
+        0, 1, 2, // Top left triangle
+        1, 3, 0  // Top right triangle
+    };
 
     //Texture loading stuff
     stbi_set_flip_vertically_on_load(true);  
@@ -141,18 +138,16 @@ int main() {
     glGenVertexArrays(1, &vertarrayobj);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lightIndices), lightIndices, GL_STATIC_DRAW);
 
     glBindVertexArray(vertarrayobj);
     glBindBuffer(GL_ARRAY_BUFFER, vertbufferobj);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW);
 
     //Attrib index, # of datas(?) in attrib, type of attrib, normalized(?) usually false, stride (same for all attribs in same array, pointer to offset)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
     //Shaders for pyramid
 
@@ -163,34 +158,19 @@ int main() {
     
     CreShader lightSourceShader = CreShader("shaders/lightvert.glsl", "shaders/lightsourcefrag.glsl");
 
-    //Complicated way --> glUniform1i(glGetUniformLocation(mainShaders.ID, "forestTexture"), 0);
-    //Simple way --> mainShaders.setInt("forestTexture", 0);
-
     lightShader.use();
     lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
     lightSourceShader.use();
-    lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
+    //lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
 
-    //Buffers and vertices for the light object
-    
-    float lightVertices[] = {
-        0.0f, 1.0f, 0.0f, // Topmost point
-        1.0f, 0.0f, 0.0f, // Rightmost point
-        0.0f, 0.0f, 1.0f, // Closest to camera point
-        0.0f, 1.0f, 0.0f, // Topmost point
-        -1.0f,0.0f, 0.0f, // Leftmost point
-        0.0f, 0.0f, 1.0f // Closest to camera point
-    }; 
+    //Buffers for the light vertices
 
-    unsigned int LVBO, LVAO; // Light vertex buffer object and light vertex array object 
-    glGenBuffers(1, &LVBO); // Initialize the buffer
+    unsigned int LVAO; // Light vertex buffer object and light vertex array object 
     glGenVertexArrays(1, &LVAO); // Initialize the array
 
     glBindVertexArray(LVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, LVBO);
-
     glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW); // Use the buffer
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // Point towards the positions
@@ -201,7 +181,7 @@ int main() {
     glBindVertexArray(vertarrayobj);
     glBindBuffer(GL_ARRAY_BUFFER, vertbufferobj);
 
-    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     while(!glfwWindowShouldClose(window)) {
 
@@ -216,7 +196,7 @@ int main() {
         
         // Rendering stuff here
 
-        glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clearin the depth buffer is important too
 
         lightShader.use();
@@ -255,7 +235,6 @@ int main() {
         glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
         
         glBindVertexArray(LVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, LVBO);
         glDrawArrays(GL_TRIANGLES, 0, 18);
 
         glfwSwapBuffers(window);
@@ -265,7 +244,7 @@ int main() {
     glDeleteVertexArrays(1, &vertarrayobj);
     glDeleteBuffers(1, &vertbufferobj);
     glDeleteBuffers(1, &elembufferobj);
-    glDeleteBuffers(1, &LVBO);
+    //glDeleteBuffers(1, &LVBO);
     glDeleteVertexArrays(1, &LVAO);
     //mainShaders.delet();
     lightShader.delet();

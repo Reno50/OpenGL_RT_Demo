@@ -105,6 +105,11 @@ public:
     {
         glUniform3f(glGetUniformLocation(ID, name.c_str()), value1, value2, value3);
     }
+    void setMat4f(const std::string &name, glm::mat4 value) // Value is a pointer to a float matrix gotten via glm::value_ptr()
+    {
+        unsigned int location = glGetUniformLocation(ID, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
 
 private:
     // utility function for checking shader compilation/linking errors.
