@@ -146,14 +146,10 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW);
 
     //Attrib index, # of datas(?) in attrib, type of attrib, normalized(?) usually false, stride (same for all attribs in same array, pointer to offset)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
 
-    //Shaders for pyramid
-
-    //Shader class stuff
-    //CreShader mainShaders = CreShader("shaders/testvert.glsl", "shaders/testfrag.glsl");
-
+    //Shaders
     CreShader lightShader = CreShader("shaders/lightvert.glsl", "shaders/lightfrag.glsl");
     
     CreShader lightSourceShader = CreShader("shaders/lightvert.glsl", "shaders/lightsourcefrag.glsl");
@@ -163,7 +159,7 @@ int main() {
     lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
     lightSourceShader.use();
-    //lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
+    lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
 
     //Buffers for the light vertices
 
@@ -225,7 +221,7 @@ int main() {
 
         //Transformation stuff
         lightSourceMat = glm::mat4(1.0f);
-        //glm::translate(lightSourceMat, glm::vec3(5.0f, 0.0f, 5.0f));
+        glm::translate(lightSourceMat, glm::vec3(5.0f, 0.0f, 5.0f));
 
         unsigned int lightSourceMatLocation = glGetUniformLocation(lightSourceShader.ID, "model");
         glUniformMatrix4fv(lightSourceMatLocation, 1, GL_FALSE, glm::value_ptr(lightSourceMat));
@@ -235,7 +231,7 @@ int main() {
         glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
         
         glBindVertexArray(LVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 18);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
