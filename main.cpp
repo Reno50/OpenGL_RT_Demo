@@ -86,36 +86,8 @@ int main() {
 
     int lightIndices[] {
         0, 1, 2, // Top left triangle
-        1, 3, 0  // Top right triangle
+        1, 3, 2  // Top right triangle
     };
-
-    //Texture loading stuff
-    stbi_set_flip_vertically_on_load(true);  
-    //I should probably loop this process at some point
-
-    int catWidth;
-    int catHeight;
-    int catChannelCount;
-    unsigned char *catData = stbi_load("content/textures/test2.png", &catWidth, &catHeight, &catChannelCount, 0);
-
-    unsigned int catTexture;
-    glGenTextures(1, &catTexture);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, catTexture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
-
-    if (catData) 
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, catWidth, catHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, catData);
-        glGenerateMipmap(GL_TEXTURE_2D); //This texture has to be RGBA
-    }
-
-    stbi_image_free(catData);
-
 
     //Model matrix
     glm::mat4 modelMat = glm::mat4(1.0f);
@@ -163,13 +135,20 @@ int main() {
 
     //Buffers for the light vertices
 
-    unsigned int LVAO; // Light vertex buffer object and light vertex array object 
-    glGenVertexArrays(1, &LVAO); // Initialize the array
+    unsigned int lightVertArray, lightVertBuffer, lightElemBuffer; // Light vertex buffer object and light vertex array object 
+    glGenVertexArrays(1, &lightVertArray); // Initialize the array
+    glGenBuffers(1, &lightVertBuffer);
+    glGenBuffers(1, &lightElemBuffer);
 
-    glBindVertexArray(LVAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightElemBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lightIndices), lightIndices, GL_STATIC_DRAW);
+    
+    glBindVertexArray(lightVertArray);
+    glBindBuffer(GL_ARRAY_BUFFER, lightVertBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW); // Use the buffer
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // Point towards the positions
+    glEnableVertexAttribArray(0);
 
     // Rebind the pyramid buffers because it segfaults otherwise in the drawElements function??
 
@@ -219,9 +198,11 @@ int main() {
 
         lightSourceShader.use();
 
+        lightSourceShader.setVec3("sourceColor", 0.1f, 0.9f, 0.2f);
+
         //Transformation stuff
         lightSourceMat = glm::mat4(1.0f);
-        glm::translate(lightSourceMat, glm::vec3(5.0f, 0.0f, 5.0f));
+        glm::translate(lightSourceMat, glm::vec3(2.0f, 0.0f, 0.0f));
 
         unsigned int lightSourceMatLocation = glGetUniformLocation(lightSourceShader.ID, "model");
         glUniformMatrix4fv(lightSourceMatLocation, 1, GL_FALSE, glm::value_ptr(lightSourceMat));
@@ -230,7 +211,10 @@ int main() {
         unsigned int lightProjectionLocation = glGetUniformLocation(lightSourceShader.ID, "projection");
         glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
         
-        glBindVertexArray(LVAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightElemBuffer);
+        glBindVertexArray(lightVertArray);
+        glBindBuffer(GL_ARRAY_BUFFER, lightVertBuffer);
+
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
@@ -240,9 +224,10 @@ int main() {
     glDeleteVertexArrays(1, &vertarrayobj);
     glDeleteBuffers(1, &vertbufferobj);
     glDeleteBuffers(1, &elembufferobj);
-    //glDeleteBuffers(1, &LVBO);
-    glDeleteVertexArrays(1, &LVAO);
-    //mainShaders.delet();
+    glDeleteBuffers(1, &lightVertBuffer);
+    glDeleteBuffers(1, &lightElemBuffer);
+    glDeleteVertexArrays(1, &lightVertArray);
+    
     lightShader.delet();
     lightSourceShader.delet();
 
@@ -255,7 +240,6 @@ void processInput(GLFWwindow* window) {
     //Input shenanigans here
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -292,4 +276,33 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     //Absolutely nothing happens here
     camera.ProcessMouseScroll(yoffset);
+}
+
+void loadTexture(const std::string &filePath, unsigned int &texInt) // I have no idea if this works
+{
+    //Texture loading stuff
+    stbi_set_flip_vertically_on_load(true);  
+
+    int texWidth;
+    int texHeight;
+    int texChannelCount;
+    unsigned char *texData = stbi_load("content/textures/test2.png", &texWidth, &texHeight, &texChannelCount, 0);
+
+    glGenTextures(1, &texInt);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texInt);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
+
+    if (texData) 
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+        glGenerateMipmap(GL_TEXTURE_2D); //This texture has to be RGBA
+    }
+
+    stbi_image_free(texData);
+
 }
