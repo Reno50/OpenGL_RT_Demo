@@ -76,25 +76,32 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    // Light vertices
-    float lightVertices[] = {
+    // Object vertices
+    float objVertices[] = {
         0.0f, 1.0f, 0.0f, // Top left point
+        1.0f, 1.0f, 0.0f, // Top right point
+        0.0f, 0.0f, 0.0f, // Bottom left point
         1.0f, 1.0f, 0.0f, // Top right point
         0.0f, 0.0f, 0.0f, // Bottom left point
         1.0f, 0.0f, 0.0f  // Bottom right point
     }; 
 
-    int lightIndices[] {
-        0, 1, 2, // Top left triangle
-        1, 3, 2  // Top right triangle
-    };
+    // Light vertices
+    float lightVertices[] = {
+        0.0f, 1.0f, 0.0f, // Top left point
+        1.0f, 1.0f, 0.0f, // Top right point
+        0.0f, 0.0f, 0.0f, // Bottom left point
+        1.0f, 1.0f, 0.0f, // Top right point
+        0.0f, 0.0f, 0.0f, // Bottom left point
+        1.0f, 0.0f, 0.0f  // Bottom right point
+    }; 
 
     //Model matrix
     glm::mat4 modelMat = glm::mat4(1.0f);
     //View matrix
     glm::mat4 viewMat = camera.GetViewMatrix();
     viewMat = glm::translate(viewMat, glm::vec3(0.0f, 0.0f, -5.0f)); //Move the entire scene backwards on the z axis, or move the camera forwards (away from z=0)
-    //Keep in mind that the +z axis is backwards, imagine moving the screen closer to your face and thats pretty much it
+                                                                    //Keep in mind that the +z axis is backwards, imagine moving the screen closer to your face and thats pretty much it
     //Projection matrix
     glm::mat4 projectionMat = glm::perspective(glm::radians(camera.Zoom), 16.0f / 9.0f, 0.01f, 100.0f);
 
@@ -102,22 +109,30 @@ int main() {
     glm::mat4 lightSourceMat = glm::mat4(1.0f);
     
 
-    //All the buffers for the pyramid
-    unsigned int vertbufferobj, vertarrayobj, elembufferobj;
+    //All the buffers for the object
+    unsigned int vertbufferobj, vertarrayobj;
 
     glGenBuffers(1, &vertbufferobj);
-    glGenBuffers(1, &elembufferobj);
     glGenVertexArrays(1, &vertarrayobj);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lightIndices), lightIndices, GL_STATIC_DRAW);
 
     glBindVertexArray(vertarrayobj);
     glBindBuffer(GL_ARRAY_BUFFER, vertbufferobj);
 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(objVertices), objVertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0)); // Attrib index, # of datas(?) in attrib, type of attrib, normalized(?) usually false, stride (same for all attribs in same array), pointer to offset
+    glEnableVertexAttribArray(0);
+
+    //Buffers for the light vertices
+    unsigned int lightVertArray, lightVertBuffer;// Light vertex buffer object and light vertex array object 
+    glGenBuffers(1, &lightVertBuffer);
+    glGenVertexArrays(1, &lightVertArray);
+    
+    glBindVertexArray(lightVertArray);
+    glBindBuffer(GL_ARRAY_BUFFER, lightVertBuffer);
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW);
 
-    //Attrib index, # of datas(?) in attrib, type of attrib, normalized(?) usually false, stride (same for all attribs in same array, pointer to offset)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
 
@@ -131,28 +146,10 @@ int main() {
     lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
     lightSourceShader.use();
-    lightSourceShader.setVec3("sourceColor", 0.9f, 0.9f, 1.0f);
+    lightSourceShader.setVec3("sourceColor", 0.3f, 0.9f, 0.3f);
 
-    //Buffers for the light vertices
+    // Rebind the object buffers because it segfaults otherwise in the drawElements function??
 
-    unsigned int lightVertArray, lightVertBuffer, lightElemBuffer; // Light vertex buffer object and light vertex array object 
-    glGenVertexArrays(1, &lightVertArray); // Initialize the array
-    glGenBuffers(1, &lightVertBuffer);
-    glGenBuffers(1, &lightElemBuffer);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightElemBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lightIndices), lightIndices, GL_STATIC_DRAW);
-    
-    glBindVertexArray(lightVertArray);
-    glBindBuffer(GL_ARRAY_BUFFER, lightVertBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(lightVertices), lightVertices, GL_STATIC_DRAW); // Use the buffer
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // Point towards the positions
-    glEnableVertexAttribArray(0);
-
-    // Rebind the pyramid buffers because it segfaults otherwise in the drawElements function??
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
     glBindVertexArray(vertarrayobj);
     glBindBuffer(GL_ARRAY_BUFFER, vertbufferobj);
 
@@ -178,21 +175,18 @@ int main() {
         lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 
         //Transformation stuff
-        modelMat = glm::mat4(1.0f);
-        unsigned int modelLocation = glGetUniformLocation(lightShader.ID, "model");
-        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(modelMat));
-        unsigned int viewLocation = glGetUniformLocation(lightShader.ID, "view");
         viewMat = camera.GetViewMatrix();
-        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
-        unsigned int projectionLocation = glGetUniformLocation(lightShader.ID, "projection");
-        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
+        modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, glm::vec3(0.0f, 0.0f, -1.5f));
+        lightShader.setMat4f("model", modelMat);
+        lightShader.setMat4f("view", viewMat);
+        lightShader.setMat4f("projection", projectionMat);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elembufferobj);
         glBindVertexArray(vertarrayobj);
         glBindBuffer(GL_ARRAY_BUFFER, vertbufferobj);
 
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 18);
 
         //Now bind the light source object's buffers and shaders
 
@@ -204,18 +198,14 @@ int main() {
         lightSourceMat = glm::mat4(1.0f);
         glm::translate(lightSourceMat, glm::vec3(2.0f, 0.0f, 0.0f));
 
-        unsigned int lightSourceMatLocation = glGetUniformLocation(lightSourceShader.ID, "model");
-        glUniformMatrix4fv(lightSourceMatLocation, 1, GL_FALSE, glm::value_ptr(lightSourceMat));
-        unsigned int lightViewLocation = glGetUniformLocation(lightSourceShader.ID, "view");
-        glUniformMatrix4fv(lightViewLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
-        unsigned int lightProjectionLocation = glGetUniformLocation(lightSourceShader.ID, "projection");
-        glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMat));
+        lightSourceShader.setMat4f("model", lightSourceMat);
+        lightSourceShader.setMat4f("view", viewMat);
+        lightSourceShader.setMat4f("projection", projectionMat);
         
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightElemBuffer);
         glBindVertexArray(lightVertArray);
         glBindBuffer(GL_ARRAY_BUFFER, lightVertBuffer);
 
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 18);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
@@ -223,9 +213,7 @@ int main() {
 
     glDeleteVertexArrays(1, &vertarrayobj);
     glDeleteBuffers(1, &vertbufferobj);
-    glDeleteBuffers(1, &elembufferobj);
     glDeleteBuffers(1, &lightVertBuffer);
-    glDeleteBuffers(1, &lightElemBuffer);
     glDeleteVertexArrays(1, &lightVertArray);
     
     lightShader.delet();
