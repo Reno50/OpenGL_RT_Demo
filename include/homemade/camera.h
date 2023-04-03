@@ -6,21 +6,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
+#include <math.h>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    JUMP
 };
 
 // Default camera values
 const float YAW         = -90.0f;
 const float PITCH       =  0.0f;
-const float SPEED       =  7.0f;
+const float SPEED       =  0.5f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
+const float ACCLIMIT    =  0.25f;
 
 class Camera
 {
@@ -31,6 +34,9 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+    glm::vec3 Acceleration;
+    glm::vec3 Decceleration;
+    glm::vec3 VelocityCap;
     glm::vec3 Velocity;
     glm::vec3 MovementSpeed;
     // euler Angles
@@ -47,6 +53,9 @@ public:
         WorldUp = up;
         Yaw = yaw;
         Pitch = pitch;
+        VelocityCap = glm::vec3(SPEED);
+        Acceleration = glm::vec3(0.5f);
+        Decceleration = glm::vec3(0.5f);
         updateCameraVectors();
     }
 
@@ -59,22 +68,28 @@ public:
     // processes input received from any keyboard-like input system
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
-        glm::vec3 velocity = MovementSpeed * deltaTime;
-
         //Method 1
         switch (direction) {
             case FORWARD:
-                Position += Front * velocity;
+                Velocity += Acceleration[2] * Front;
                 break;
             case BACKWARD:
-                Position -= Front * velocity;
+                Velocity -= Acceleration[2] * Front;
                 break;
             case LEFT:
-                Position -= Right * velocity;
+                Velocity -= glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
                 break;
             case RIGHT:
-                Position += Right * velocity;
+                Velocity += glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
+                break;
+            case JUMP:
+                break;
         }
+    }
+
+    void IntegrateMovement(float deltaTime) 
+    {
+        Position += Velocity*deltaTime; // A little simple but it works
     }
 
     // processes input received from a mouse input system
