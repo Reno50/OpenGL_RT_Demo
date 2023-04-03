@@ -162,6 +162,8 @@ int main() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        camera.IntegrateMovement(deltaTime);
+
         // Input shenanigans function
 
         processInput(window);
