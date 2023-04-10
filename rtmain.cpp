@@ -40,6 +40,7 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+int vertexCount;
 
 int main() {
     //Boilerplate borrowed from https://learnopengl.com/Getting-started/Hello-Window
@@ -120,7 +121,32 @@ int main() {
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    // Fragment shader data
+    GLuint fragVerticesBuffer;
+    glGenBuffers(1, &fragVerticesBuffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
+
+    float placeholder[9] = {-1.0, 1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, -1.0}; // I don't know why this works while 0 doesn't?
+
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), placeholder, GL_DYNAMIC_READ);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+
     while(!glfwWindowShouldClose(window)) {
+
+        // I don't have a better place to put it so it'll just have to be redone every frame for now
+        // Basically every model in the scene will be combined into this array to send to the fragment shader
+        // Eventually, I should just make an addModel() and removeModel() function but alas I don't have that kind of time right now
+
+        vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
+
+        float verticeData[vertexCount * 3] = {
+            -1.0, 1.0, -1.0,  // Top left point
+            -1.0, -1.0, -1.0, // Bottom left point
+            1.0, -1.0, -1.0   // Bottom right point
+        };
+
+        //glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
+        //glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(verticeData), verticeData);
 
         // Timing
         float currentFrame = static_cast<float>(glfwGetTime());
