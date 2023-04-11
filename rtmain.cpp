@@ -126,10 +126,13 @@ int main() {
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
 
-    float placeholder[9] = {-1.0, 1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, -1.0}; // I don't know why this works while 0 doesn't?
+    struct placeholderType {
+        float vertex_array[9];
+    } placeholder;
 
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), placeholder, GL_DYNAMIC_READ);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+    placeholder.vertex_array[0] = 1.0f;
+
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), &placeholder, GL_DYNAMIC_COPY);
 
     while(!glfwWindowShouldClose(window)) {
 
@@ -137,16 +140,19 @@ int main() {
         // Basically every model in the scene will be combined into this array to send to the fragment shader
         // Eventually, I should just make an addModel() and removeModel() function but alas I don't have that kind of time right now
 
-        vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
+        //vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
 
-        float verticeData[vertexCount * 3] = {
+        /*float verticeData[vertexCount * 3] = {
             -1.0, 1.0, -1.0,  // Top left point
             -1.0, -1.0, -1.0, // Bottom left point
             1.0, -1.0, -1.0   // Bottom right point
         };
+        */
 
-        //glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
-        //glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(verticeData), verticeData);
+       glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
+       GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
+       memcpy(p, &placeholder, sizeof(placeholder));
+       glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
         // Timing
         float currentFrame = static_cast<float>(glfwGetTime());
