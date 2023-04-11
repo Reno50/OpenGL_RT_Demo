@@ -126,11 +126,9 @@ int main() {
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
 
-    struct placeholderType {
-        float vertex_array[9];
-    } placeholder;
+    float placeholder[9];
 
-    placeholder.vertex_array[0] = 1.0f;
+    placeholder[0] = 0.0f;
 
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), &placeholder, GL_DYNAMIC_COPY);
 
@@ -140,18 +138,18 @@ int main() {
         // Basically every model in the scene will be combined into this array to send to the fragment shader
         // Eventually, I should just make an addModel() and removeModel() function but alas I don't have that kind of time right now
 
-        //vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
+        vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
 
-        /*float verticeData[vertexCount * 3] = {
+        float verticeData[vertexCount * 3] = {
             -1.0, 1.0, -1.0,  // Top left point
             -1.0, -1.0, -1.0, // Bottom left point
             1.0, -1.0, -1.0   // Bottom right point
         };
-        */
+        
 
        glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
        GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-       memcpy(p, &placeholder, sizeof(placeholder));
+       memcpy(p, &verticeData, sizeof(verticeData));
        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
         // Timing
