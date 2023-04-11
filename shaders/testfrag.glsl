@@ -1,11 +1,15 @@
-#version 330 core
+#version 430
+#extension GL_ARB_enhanced_layouts : enable
+
 out vec4 FragColor;
 
 in vec2 TexCoord;
 
-uniform sampler2D catTexture;
+layout (std430, binding = 2) buffer placeholder {
+    float vertex_array[];
+};
 
 void main()
 {
-    FragColor = texture(catTexture, TexCoord);
+    FragColor = vec4(TexCoord, clamp((1-TexCoord.x-TexCoord.y), 0.0, 1.0), vertex_array[7]);
 } 
