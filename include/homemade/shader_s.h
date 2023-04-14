@@ -105,6 +105,10 @@ public:
     {
         glUniform3f(glGetUniformLocation(ID, name.c_str()), value1, value2, value3);
     }
+    void setVec2(const std::string &name, float value1, float value2) const
+    {
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), value1, value2);
+    }
     void setMat4f(const std::string &name, glm::mat4 value) // Value is a pointer to a float matrix gotten via glm::value_ptr()
     {
         unsigned int location = glGetUniformLocation(ID, name.c_str());

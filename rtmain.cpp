@@ -126,9 +126,11 @@ int main() {
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
 
-    float placeholder[9];
-
-    placeholder[0] = 0.0f;
+    float placeholder[9] { // Make sure to go counter-clockwise, and make it different than the actively updated one for debug purposes
+        1.0, 1.0, -1.0,   // Top right point
+        -1.0, -1.0, -1.0, // Bottom left point
+        1.0, -1.0, -1.0,  // Bottom right
+    };
 
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), &placeholder, GL_DYNAMIC_COPY);
 
@@ -140,7 +142,7 @@ int main() {
 
         vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
 
-        float verticeData[vertexCount * 3] = {
+        float verticeData[vertexCount * 3] = { // Counter-clockwise is important for normal calculation later on
             -1.0, 1.0, -1.0,  // Top left point
             -1.0, -1.0, -1.0, // Bottom left point
             1.0, -1.0, -1.0   // Bottom right point
@@ -173,7 +175,8 @@ int main() {
 
         glDrawArrays(GL_TRIANGLES, 0, 30);
         
-        
+        lightShader.setVec2("screenSize", SCR_WIDTH, SCR_HEIGHT);
+
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }
