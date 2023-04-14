@@ -143,9 +143,9 @@ int main() {
         vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
 
         float verticeData[vertexCount * 3] = { // Counter-clockwise is important for normal calculation later on
-            -1.0, 1.0, -1.0,  // Top left point
-            -1.0, -1.0, -1.0, // Bottom left point
-            1.0, -1.0, -1.0   // Bottom right point
+            -1.0, 1.0, -3.0,  // Top left point
+            -1.0, -1.0, -3.0, // Bottom left point
+            1.0, -1.0, -3.0   // Bottom right point
         };
         
 

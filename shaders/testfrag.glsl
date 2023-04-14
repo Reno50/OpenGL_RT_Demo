@@ -28,7 +28,7 @@ float ScalarTriple(vec3 u, vec3 v, vec3 w)
     return dot(cross(u, v), w);
 }
 
-bool rayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in vec3 v2, inout HitInfo info) {
+bool RayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in vec3 v2, inout HitInfo info) {
 
     // Equation 1: P = O + tR  Collision point P equals origin O + (direction of ray R multiplied by distance t)
     // Equation 2: Ax + Bx + Cz + D = 0  A, B, and C make up the normal of the triangle in normal = (A, B, C) and x, y, and z are the coordinates of any point on the plane
@@ -81,13 +81,45 @@ bool rayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in 
     C = edge2 * vp2;
     if (dot(N, C) < 0) return false; // P is on the right side;
 
-    info.dist = t;
-    info.normal = N;
-    return true; // this ray hits the triangle
+    float tempDist;
+    if (abs(dir.x) > 0.1f)
+    {
+        tempDist = (P.x - orig.x) / dir.x;
+    }
+    else if (abs(dir.y) > 0.1f)
+    {
+        tempDist = (P.y - orig.y) / dir.y;
+    }
+    else
+    {
+        tempDist = (P.z - orig.z) / dir.z;
+    }
+    
+	if (tempDist > minTravel && tempDist < info.dist)
+    {
+        info.dist = tempDist;        
+        info.normal = N;
+        return true;
+    } 
+    // As stated in the article https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/,
+    // If we accept the first hit we might miss things that are an even closer hit
+    return false;
 }
 
-vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection) {
-    
+vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection, in int triangleNum) {
+    HitInfo hitInfo;
+    hitInfo.dist = far;
+
+    vec3 ret = vec3(0.0, 0.0, 0.0);
+
+    // Intersects triangle with points vertex_array[(triangleNum * 3) - (1 through 3)]
+    // Point 1 is (0, 1, 2)
+    // Point 2 is (3, 4, 5)
+    // Point 3 is (6, 7, 8)
+    if (RayTriangleIntersect(rayPosition, rayDirection, vec3(vertex_array[(triangleNum * 9) - 9], vertex_array[(triangleNum * 9) - 8], vertex_array[(triangleNum * 9) - 7]), vec3(vertex_array[(triangleNum * 9) - 6], vertex_array[(triangleNum * 9) - 5], vertex_array[(triangleNum * 9) - 4]), vec3(vertex_array[(triangleNum * 9) - 3], vertex_array[(triangleNum * 9) - 2], vertex_array[(triangleNum * 9) - 1]), hitInfo)) {
+        ret = vec3(0.1, 1.0, 0.1);
+    } else { ret = vec3(0.1, 0.1, 0.1); }
+    return ret;
 }
 
 void main()
@@ -101,5 +133,7 @@ void main()
 
     vec3 rayDir = normalize(rayTarget - rayPos);
 
-    FragColor = vec4(rayDir, 0.0);
+    vec3 color = GetColorOfRay(rayPos, rayDir, 1);
+
+    FragColor = vec4(color, 0.0);
 } 
