@@ -40,7 +40,6 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-int vertexCount;
 
 int main() {
     //Boilerplate borrowed from https://learnopengl.com/Getting-started/Hello-Window
@@ -126,13 +125,19 @@ int main() {
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
 
-    float placeholder[9] { // Make sure to go counter-clockwise, and make it different than the actively updated one for debug purposes
-        1.0, 1.0, -1.0,   // Top right point
-        -1.0, -1.0, -1.0, // Bottom left point
-        1.0, -1.0, -1.0,  // Bottom right
-    };
+    struct shaderDat {
+        float cameraPos[3];
+        float cameraDir[3];
+        float verticeData[9] {
+            0.5, 0.5, -1.0,   // Top right point
+            -0.5, -0.5, -1.0, // Bottom left point
+            0.5, -0.5, -1.0,  // Bottom right
+        };
+    } shaderStuff;
 
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), &placeholder, GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(shaderStuff), &shaderStuff, GL_DYNAMIC_COPY);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
 
     while(!glfwWindowShouldClose(window)) {
 
@@ -140,19 +145,21 @@ int main() {
         // Basically every model in the scene will be combined into this array to send to the fragment shader
         // Eventually, I should just make an addModel() and removeModel() function but alas I don't have that kind of time right now
 
-        vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
+        struct shaderDat {
+            float cameraPos[3];
+            float cameraDir[3];
+            float verticeData[9] = { // Counter-clockwise is important for normal calculation later down the pipeline
+            -1.0, 1.0, -1.0,  // Top left point
+            -1.0, -1.0, -1.0, // Bottom left point
+            1.0, -1.0, -1.0   // Bottom right point
+            };
+        } loopStuff;
 
-        float verticeData[vertexCount * 3] = { // Counter-clockwise is important for normal calculation later on
-            -1.0, 1.0, -3.0,  // Top left point
-            -1.0, -1.0, -3.0, // Bottom left point
-            1.0, -1.0, -3.0   // Bottom right point
-        };
-        
-
-       glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
-       GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-       memcpy(p, &verticeData, sizeof(verticeData));
-       glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+        //glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
+        //glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(verticeData), &verticeData);
+        //GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
+        //memcpy(p, &loopStuff, sizeof(loopStuff));
+        //glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
         // Timing
         float currentFrame = static_cast<float>(glfwGetTime());

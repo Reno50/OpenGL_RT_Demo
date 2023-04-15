@@ -10,7 +10,9 @@ const float kEpsilon = 0.00000000000088;
 uniform vec2 screenSize;
 
 layout (std430, binding = 2) buffer placeholder {
-    float vertex_array[];
+    vec3 cameraPos;
+    vec3 cameraDir;
+    float verticeData[];
 };
 
 struct HitInfo
@@ -46,7 +48,7 @@ bool RayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in 
     // check if the ray and plane are parallel.
     float NdotRayDirection = dot(N, dir);
     if (abs(NdotRayDirection) < kEpsilon) // almost 0
-        return false; // they are parallel, so they don't intersect! 
+        return false; // they are parallel, so they don't intersect
 
     // compute d parameter using equation 2
     float d = -dot(N, v0);
@@ -60,7 +62,7 @@ bool RayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in 
     // compute the intersection point using equation 1
     vec3 P = orig + t * dir;
  
-    // Step 2: inside-outside test
+    // Step 2: inside-outside test, test whether the point is on the left of every edge or not
     vec3 C; // vector perpendicular to triangle's plane
  
     // edge 0
@@ -81,12 +83,13 @@ bool RayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in 
     C = edge2 * vp2;
     if (dot(N, C) < 0) return false; // P is on the right side;
 
+    /*
     float tempDist;
-    if (abs(dir.x) > 0.1f)
+    if (abs(dir.x) > 0.1)
     {
         tempDist = (P.x - orig.x) / dir.x;
     }
-    else if (abs(dir.y) > 0.1f)
+    else if (abs(dir.y) > 0.1)
     {
         tempDist = (P.y - orig.y) / dir.y;
     }
@@ -103,22 +106,32 @@ bool RayTriangleIntersect(in vec3 orig, in vec3 dir, in vec3 v0, in vec3 v1, in 
     } 
     // As stated in the article https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/,
     // If we accept the first hit we might miss things that are an even closer hit
-    return false;
+    // However, for debug purposes, we'll just take the first hit for now
+    */
+    info.dist = t;
+    info.normal = N;
+    return true;
 }
 
 vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection, in int triangleNum) {
     HitInfo hitInfo;
     hitInfo.dist = far;
 
-    vec3 ret = vec3(0.0, 0.0, 0.0);
+    vec3 ret = vec3(0.0, 0.0, 1.0);
 
     // Intersects triangle with points vertex_array[(triangleNum * 3) - (1 through 3)]
     // Point 1 is (0, 1, 2)
+    vec3 point1 = vec3(10.0, 1.0, 20.0);//vec3(vertex_array[(triangleNum * 9) - 9], vertex_array[(triangleNum * 9) - 8], vertex_array[(triangleNum * 9) - 7]);
     // Point 2 is (3, 4, 5)
+    vec3 point2 = vec3(9.0, 0.0, 20.0);//vec3(vertex_array[(triangleNum * 9) - 6], vertex_array[(triangleNum * 9) - 5], vertex_array[(triangleNum * 9) - 4]);
     // Point 3 is (6, 7, 8)
-    if (RayTriangleIntersect(rayPosition, rayDirection, vec3(vertex_array[(triangleNum * 9) - 9], vertex_array[(triangleNum * 9) - 8], vertex_array[(triangleNum * 9) - 7]), vec3(vertex_array[(triangleNum * 9) - 6], vertex_array[(triangleNum * 9) - 5], vertex_array[(triangleNum * 9) - 4]), vec3(vertex_array[(triangleNum * 9) - 3], vertex_array[(triangleNum * 9) - 2], vertex_array[(triangleNum * 9) - 1]), hitInfo)) {
-        ret = vec3(0.1, 1.0, 0.1);
-    } else { ret = vec3(0.1, 0.1, 0.1); }
+    vec3 point3 = vec3(10.0, 0.0, 20.0);//vec3(vertex_array[(triangleNum * 9) - 3], vertex_array[(triangleNum * 9) - 2], vertex_array[(triangleNum * 9) - 1]);
+    // Check if it hits and send the color
+    if (RayTriangleIntersect(rayPosition, rayDirection, point1, point2, point3, hitInfo)) {
+        ret = vec3(0.5, 0.0, 0.5);
+    } else { 
+        ret = vec3(0.1, 0.5, 0.1); 
+    }
     return ret;
 }
 
