@@ -51,5 +51,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "C:/Users/andre/Dev/OpenGL_RT_Demo/include/glm",
+    "C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\gcc.exe"
 }
