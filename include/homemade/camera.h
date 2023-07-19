@@ -55,7 +55,7 @@ public:
         Pitch = pitch;
         VelocityCap = glm::vec3(SPEED);
         Acceleration = glm::vec3(0.5f);
-        Decceleration = glm::vec3(0.5f);
+        Decceleration = glm::vec3(1.001f);
         updateCameraVectors();
     }
 
@@ -69,18 +69,37 @@ public:
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
         //Method 1
+        glm::vec3 polarity = glm::vec3(Velocity[0]/abs(Velocity[0]), Velocity[1]/abs(Velocity[1]), Velocity[0]/abs(Velocity[0]));
         switch (direction) {
             case FORWARD:
-                Velocity += Acceleration[2] * Front;
+                if (glm::distance(glm::vec3(0.0f), Velocity) <= glm::distance(glm::vec3(0.0f), VelocityCap)) {
+                    Velocity += Acceleration[2] * Front;
+                    Velocity[0] += (VelocityCap[0] - Velocity[0]) * polarity[0];
+                    Velocity[1] += (VelocityCap[1] - Velocity[1]) * polarity[1];
+                    Velocity[2] += (VelocityCap[2] - Velocity[2]) * polarity[2];
+                }
+                //Velocity -= Decceleration[2] * Front;
                 break;
             case BACKWARD:
-                Velocity -= Acceleration[2] * Front;
+                if (glm::distance(glm::vec3(0.0f), Velocity) <= glm::distance(glm::vec3(0.0f), VelocityCap)) {
+                    Velocity -= Acceleration[2] * Front;
+                    Velocity[0] += (VelocityCap[0] - Velocity[0]) * polarity[0];
+                    Velocity[1] += (VelocityCap[1] - Velocity[1]) * polarity[1];
+                    Velocity[2] += (VelocityCap[2] - Velocity[2]) * polarity[2];
+                }
+                //Velocity += Decceleration[2] * Front;
                 break;
             case LEFT:
-                Velocity -= glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
+                if (glm::distance(glm::vec3(0.0f), Velocity) <= glm::distance(glm::vec3(0.0f), VelocityCap)) {
+                    Velocity -= glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
+                }
+                //Velocity += glm::normalize(glm::cross(Front, Up)) * Decceleration[0];
                 break;
             case RIGHT:
-                Velocity += glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
+                if (glm::distance(glm::vec3(0.0f), Velocity) <= glm::distance(glm::vec3(0.0f), VelocityCap)) {
+                    Velocity += glm::normalize(glm::cross(Front, Up)) * Acceleration[0];
+                }
+                //Velocity -= glm::normalize(glm::cross(Front, Up)) * Decceleration[0];
                 break;
             case JUMP:
                 break;
@@ -90,6 +109,7 @@ public:
     void IntegrateMovement(float deltaTime) 
     {
         Position += Velocity*deltaTime; // A little simple but it works
+        Velocity = Velocity / (Decceleration);
     }
 
     // processes input received from a mouse input system
