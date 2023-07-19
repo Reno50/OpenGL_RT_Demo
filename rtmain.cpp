@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -40,7 +41,41 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-int vertexCount;
+
+struct shaderDat {
+        float cameraPos[3];
+        float cameraDir[3];
+        float verticeData[9];
+};
+
+struct Vector {
+    double x;
+    double y;
+    double z;
+
+    Vector(double x, double y, double z) : x(x), y(y), z(z) {}
+};
+
+Vector normalize(Vector vector) {
+    double magnitude = std::sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+    return Vector(vector.x / magnitude, vector.y / magnitude, vector.z / magnitude);
+}
+
+Vector anglesToVector(double pitch, double yaw, double roll) {
+    double x = std::cos(yaw) * std::cos(pitch);
+    double y = std::sin(roll) * std::sin(pitch) * std::cos(yaw) + std::cos(roll) * std::sin(yaw);
+    double z = std::sin(roll) * std::sin(pitch) * std::sin(yaw) - std::cos(roll) * std::cos(yaw);
+    return normalize(Vector(x, y, z));
+}
+
+Vector vectorToAngles(Vector vector) {
+    double pitch = std::asin(vector.y);
+    double yaw = std::atan2(vector.z, vector.x);
+    double roll = std::atan2(-vector.x * std::sin(yaw) + vector.z * std::cos(yaw), vector.y);
+    return Vector(pitch, yaw, roll);
+}
+
+shaderDat loopStuff;
 
 int main() {
     //Boilerplate borrowed from https://learnopengl.com/Getting-started/Hello-Window
@@ -122,35 +157,52 @@ int main() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Fragment shader data
-    GLuint fragVerticesBuffer;
+    GLuint fragVerticesBuffer = 0;
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
 
-    float placeholder[9];
-
-    placeholder[0] = 0.0f;
-
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(placeholder), &placeholder, GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
 
     while(!glfwWindowShouldClose(window)) {
 
         // I don't have a better place to put it so it'll just have to be redone every frame for now
         // Basically every model in the scene will be combined into this array to send to the fragment shader
-        // Eventually, I should just make an addModel() and removeModel() function but alas I don't have that kind of time right now
+        // Eventually, I should just make an addModel() and removeModel() function
 
-        vertexCount = 3; // Just a temporary thing, eventually needs dynamic-ifying
+        loopStuff.verticeData[0] = 2.0;
+        loopStuff.verticeData[1] = 3.0;
+        loopStuff.verticeData[2] = 2.0;
+        loopStuff.verticeData[3] = 5.0;
+        loopStuff.verticeData[4] = 3.0;
+        loopStuff.verticeData[5] = 2.0;
+        loopStuff.verticeData[6] = 5.0;
+        loopStuff.verticeData[7] = 5.0;
+        loopStuff.verticeData[8] = 2.0;
 
-        float verticeData[vertexCount * 3] = {
-            -1.0, 1.0, -1.0,  // Top left point
-            -1.0, -1.0, -1.0, // Bottom left point
-            1.0, -1.0, -1.0   // Bottom right point
-        };
-        
+        loopStuff.cameraDir[0] = 0.0;
+        loopStuff.cameraDir[1] = 0.0;
+        loopStuff.cameraDir[2] = 0.0;
 
-       glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
-       GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-       memcpy(p, &verticeData, sizeof(verticeData));
-       glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+        loopStuff.cameraPos[0] = 0.0;
+        loopStuff.cameraPos[1] = 0.0;
+        loopStuff.cameraPos[2] = 0.0;
+
+        /* The old way
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(loopStuff), &loopStuff); // Write
+        GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY); // Map
+        memcpy(p, &loopStuff, sizeof(loopStuff)); // Copy stuff into the map of the buffer? (I thought we already wrote the data to the buffer?)
+
+        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER); // Unmap
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
+        */
+
+        // The new way
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
+        glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW); // Write
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
 
         // Timing
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -173,7 +225,8 @@ int main() {
 
         glDrawArrays(GL_TRIANGLES, 0, 30);
         
-        
+        lightShader.setVec2("screenSize", SCR_WIDTH, SCR_HEIGHT);
+
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }
@@ -193,16 +246,16 @@ void processInput(GLFWwindow* window) {
     
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    /*
+    
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        loopStuff.cameraDir[0] += 0.1;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        loopStuff.cameraDir[0] -= 0.1;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        loopStuff.cameraDir[1] += 0.1;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-    */
+        loopStuff.cameraDir[1] -= 0.1;
+    
     //if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     //    camera.ProcessKeyboard(JUMP, deltaTime);
 }
