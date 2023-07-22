@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe build active file",
+			"command": "C:/msys64/usr/bin/g++.exe",
+			"args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-I${fileDirname}\\include",
+                "-L${fileDirname}\\lib",
+                "${fileDirname}\\src\\glad.c",
+                "${file}",
+                "-lglfw3dll",
+                "-lstdc++",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+			"options": {
+				"cwd": "C:/msys64/usr/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "I have no idea if this is the correct task"
+		}
+	]
+}
