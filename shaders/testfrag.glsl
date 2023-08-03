@@ -9,7 +9,7 @@ const float kEpsilon = 0.000000000000088;
 
 uniform vec2 screenSize;
 
-layout (std430, binding = 2) buffer placeholder {
+layout (std430, binding = 2) buffer shaderDat {
     vec3 cameraPos;
     vec3 cameraDir;
     float verticeData[];
@@ -123,7 +123,7 @@ vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection, in int triangleNum
     vec3 point3 = vec3(verticeData[(triangleNum * 9) - 3], verticeData[(triangleNum * 9) - 2], verticeData[(triangleNum * 9) - 1]);
     // Check if it hits and send the color
     if (RayTriangleIntersect(rayPosition, rayDirection, point1, point2, point3, hitInfo)) {
-        ret = vec3(cameraDir.x, cameraDir.y, cameraDir.z);
+        ret = vec3(0.6, 0.1, 0.7);
     }
     return ret;
 }
@@ -131,11 +131,11 @@ vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection, in int triangleNum
 void main()
 {
     // The ray target on the pixel plane, -1 to +1
-    vec2 pixelTarget = TexCoord; //abs(TexCoord * 2.0 - 1.0); The abs was acting up so uh i just am using a plane 0 to 1
+    vec2 pixelTarget = abs(TexCoord * 2.0 - 1.0); //vec2 pixelTarget = TexCoord; The abs was acting up so uh i just am using a plane 0 to 1
 
     vec3 rayPos = vec3(0.0, 0.0, 0.0) + cameraPos; // Ray starts at origin
 
-    vec3 rayTarget = vec3(pixelTarget, 1.0); // The ray is shooting at the pixel but far away from the camera
+    vec3 rayTarget = vec3(pixelTarget, 0.1); // The ray is shooting at the pixel but far away from the camera
 
     vec3 rayDir = normalize(rayTarget - rayPos);
 

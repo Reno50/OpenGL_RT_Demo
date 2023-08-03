@@ -39,13 +39,18 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
+struct InputDimension {
+    float forward;
+    float side;
+};
+
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 struct shaderDat {
-        float cameraPos[3];
-        float cameraDir[3];
-        float verticeData[9];
+    float cameraPos[3];
+    float cameraDir[3];
+    float verticeData[9];
 };
 
 struct Vector {
@@ -75,7 +80,28 @@ Vector vectorToAngles(Vector vector) {
     return Vector(pitch, yaw, roll);
 }
 
+InputDimension smoothInput(InputDimension input, float effectStrength) { // Smoothes out the rough keyboard input
+    InputDimension output;
+    output.forward = input.forward;
+    output.side = input.side;
+
+    if (input.forward > 0) {
+        output.forward -= input.forward / (1 / effectStrength);
+    } else if (input.forward < 0) {
+        output.forward += input.forward / (1 / effectStrength);
+    }
+    if (input.side > 0) {
+        output.side -= input.side / (1 / effectStrength);
+    } else if (input.side < 0) {
+        output.side += input.side / (1 / effectStrength);
+    }
+
+    return output;
+};
+
+// Initialize structs for the program
 shaderDat loopStuff;
+InputDimension keyInput;
 
 int main() {
     //Boilerplate borrowed from https://learnopengl.com/Getting-started/Hello-Window
@@ -160,7 +186,6 @@ int main() {
     GLuint fragVerticesBuffer = 0;
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
-
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
@@ -171,23 +196,23 @@ int main() {
         // Basically every model in the scene will be combined into this array to send to the fragment shader
         // Eventually, I should just make an addModel() and removeModel() function
 
-        loopStuff.verticeData[0] = 2.0;
-        loopStuff.verticeData[1] = 3.0;
-        loopStuff.verticeData[2] = 2.0;
-        loopStuff.verticeData[3] = 5.0;
-        loopStuff.verticeData[4] = 3.0;
-        loopStuff.verticeData[5] = 2.0;
-        loopStuff.verticeData[6] = 5.0;
-        loopStuff.verticeData[7] = 5.0;
-        loopStuff.verticeData[8] = 2.0;
+        loopStuff.verticeData[0] = 2.0; // X
+        loopStuff.verticeData[1] = 3.0; // Y
+        loopStuff.verticeData[2] = 5.0; // Z
+        loopStuff.verticeData[3] = 5.0; // X
+        loopStuff.verticeData[4] = 3.0; // Y
+        loopStuff.verticeData[5] = 5.0; // Z
+        loopStuff.verticeData[6] = 5.0; // X
+        loopStuff.verticeData[7] = 5.0; // Y
+        loopStuff.verticeData[8] = 5.0; // Z
 
-        loopStuff.cameraDir[0] = 0.0;
-        loopStuff.cameraDir[1] = 0.0;
-        loopStuff.cameraDir[2] = 0.0;
+        loopStuff.cameraDir[0] = 0.0; // X
+        loopStuff.cameraDir[1] = 0.0; // Y
+        loopStuff.cameraDir[2] = 1.0; // Z
 
-        loopStuff.cameraPos[0] = 0.0;
-        loopStuff.cameraPos[1] = 0.0;
-        loopStuff.cameraPos[2] = 0.0;
+        loopStuff.cameraPos[0] = 0.0; // X
+        loopStuff.cameraPos[1] = 0.0; // Y
+        loopStuff.cameraPos[2] = 0.0 + keyInput.forward; // Z
 
         /* The old way
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
@@ -199,9 +224,17 @@ int main() {
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
         */
 
-        // The new way
+        /* The newer way
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
         glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW); // Write
+        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
+        */
+
+        // The newest way
+
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(loopStuff), &loopStuff); // Buffer
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
 
         // Timing
@@ -215,7 +248,7 @@ int main() {
         
         // Rendering stuff here
 
-        glClearColor(0.5f, 0.5f, 0.8f, 1.0f);
+        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clearin the depth buffer is important too
         
         lightShader.use();
@@ -248,14 +281,16 @@ void processInput(GLFWwindow* window) {
         glfwSetWindowShouldClose(window, true);
     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        loopStuff.cameraDir[0] += 0.1;
+        keyInput.forward += 0.1;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        loopStuff.cameraDir[0] -= 0.1;
+        keyInput.forward -= 0.1;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        loopStuff.cameraDir[1] += 0.1;
+        keyInput.side += 0.1;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        loopStuff.cameraDir[1] -= 0.1;
+        keyInput.side -= 0.1;
     
+    keyInput = smoothInput(keyInput, 0.4);
+
     //if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     //    camera.ProcessKeyboard(JUMP, deltaTime);
 }

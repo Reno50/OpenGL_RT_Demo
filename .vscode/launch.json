@@ -20,7 +20,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/MinGW/bin/gdb",
+            "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -33,9 +33,26 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "Launch using g++ compiler",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/rtmain.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-IC:/Users/andre/Dev/OpenGL_RT_Demo/include",
+                "-LC:/Users/andre/Dev/OpenGL_RT_Demo/lib",
+                "-Lglfw3.dll",
+                "C:/Users/andre/Dev/OpenGL_RT_Demo/src/glad.c",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": []
         }
-        
-
     ],
     "version": "2.0.0"
 }
