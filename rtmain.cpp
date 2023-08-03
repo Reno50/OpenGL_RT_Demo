@@ -183,11 +183,30 @@ int main() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Fragment shader data
+
+    loopStuff.verticeData[0] = 0.3; // X
+    loopStuff.verticeData[1] = 0.3; // Y
+    loopStuff.verticeData[2] = 0.5; // Z
+    loopStuff.verticeData[3] = 0.7; // X
+    loopStuff.verticeData[4] = 0.3; // Y
+    loopStuff.verticeData[5] = 0.5; // Z
+    loopStuff.verticeData[6] = 0.7; // X
+    loopStuff.verticeData[7] = 0.7; // Y
+    loopStuff.verticeData[8] = 0.5; // Z
+
+    loopStuff.cameraDir[0] = 0.0; // X
+    loopStuff.cameraDir[1] = 0.0; // Y
+    loopStuff.cameraDir[2] = 1.0; // Z
+
+    loopStuff.cameraPos[0] = 0.0; // X
+    loopStuff.cameraPos[1] = 0.0; // Y
+    loopStuff.cameraPos[2] = 0.0; // Z
+
     GLuint fragVerticesBuffer = 0;
     glGenBuffers(1, &fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
+    //glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
 
     while(!glfwWindowShouldClose(window)) {
@@ -196,15 +215,15 @@ int main() {
         // Basically every model in the scene will be combined into this array to send to the fragment shader
         // Eventually, I should just make an addModel() and removeModel() function
 
-        loopStuff.verticeData[0] = 2.0; // X
-        loopStuff.verticeData[1] = 3.0; // Y
-        loopStuff.verticeData[2] = 5.0; // Z
-        loopStuff.verticeData[3] = 5.0; // X
-        loopStuff.verticeData[4] = 3.0; // Y
-        loopStuff.verticeData[5] = 5.0; // Z
-        loopStuff.verticeData[6] = 5.0; // X
-        loopStuff.verticeData[7] = 5.0; // Y
-        loopStuff.verticeData[8] = 5.0; // Z
+        loopStuff.verticeData[0] = 0.3; // X
+        loopStuff.verticeData[1] = 0.3; // Y
+        loopStuff.verticeData[2] = 0.5; // Z
+        loopStuff.verticeData[3] = 0.7; // X
+        loopStuff.verticeData[4] = 0.3; // Y
+        loopStuff.verticeData[5] = 0.5; // Z
+        loopStuff.verticeData[6] = 0.7; // X
+        loopStuff.verticeData[7] = 0.7; // Y
+        loopStuff.verticeData[8] = 0.5; // Z
 
         loopStuff.cameraDir[0] = 0.0; // X
         loopStuff.cameraDir[1] = 0.0; // Y
@@ -214,7 +233,7 @@ int main() {
         loopStuff.cameraPos[1] = 0.0; // Y
         loopStuff.cameraPos[2] = 0.0 + keyInput.forward; // Z
 
-        /* The old way
+        /* //The old way
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(loopStuff), &loopStuff); // Write
         GLvoid* p = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY); // Map
@@ -224,7 +243,7 @@ int main() {
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
         */
 
-        /* The newer way
+        /* //The newer way
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
         glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(loopStuff), &loopStuff, GL_DYNAMIC_DRAW); // Write
         glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, fragVerticesBuffer);
@@ -232,11 +251,12 @@ int main() {
         */
 
         // The newest way
-
+        
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, fragVerticesBuffer); // Bind
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(loopStuff), &loopStuff); // Buffer
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); // Unbind
-
+        
+       
         // Timing
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;

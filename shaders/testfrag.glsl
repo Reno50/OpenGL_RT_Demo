@@ -117,10 +117,13 @@ vec3 GetColorOfRay(in vec3 rayPosition, in vec3 rayDirection, in int triangleNum
     // Intersects triangle with points verticeData[(triangleNum * 3) - (1 through 3)]
     // Point 1 is (0, 1, 2)
     vec3 point1 = vec3(verticeData[(triangleNum * 9) - 9], verticeData[(triangleNum * 9) - 8], verticeData[(triangleNum * 9) - 7]);
+    //vec3 point1 = vec3(0.3, 0.3, 0.5);
     // Point 2 is (3, 4, 5)
     vec3 point2 = vec3(verticeData[(triangleNum * 9) - 6], verticeData[(triangleNum * 9) - 5], verticeData[(triangleNum * 9) - 4]);
+    //vec3 point2 = vec3(0.7, 0.3, 0.5);
     // Point 3 is (6, 7, 8)
     vec3 point3 = vec3(verticeData[(triangleNum * 9) - 3], verticeData[(triangleNum * 9) - 2], verticeData[(triangleNum * 9) - 1]);
+    //vec3 point3 = vec3(0.7, 0.7, 0.5);
     // Check if it hits and send the color
     if (RayTriangleIntersect(rayPosition, rayDirection, point1, point2, point3, hitInfo)) {
         ret = vec3(0.6, 0.1, 0.7);
